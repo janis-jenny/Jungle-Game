@@ -17,9 +17,9 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
-          }
-        }
+            presets: ['@babel/preset-env'],
+          },
+        },
       },
       {
         test: [/\.vert$/, /\.frag$/],
@@ -37,7 +37,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-    template: './index.html',
+      template: './index.html',
     }),
     new webpack.DefinePlugin({
       CANVAS_RENDERER: JSON.stringify(true),
