@@ -14,7 +14,7 @@ const config = {
       enableBody: true,
     },
   },
-  scene: [BootScene, MainScene, PreloaderScene],
+  scene: [MainScene],
 };
 
 // eslint-disable-next-line no-unused-vars
