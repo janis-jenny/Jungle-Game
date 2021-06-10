@@ -24,10 +24,11 @@ export default class MainScene extends Phaser.Scene {
     // super.create();
     this.add.image(400, 300, 'bg');
     this.player = this.physics.add.image(250, 380, 'gamora_walk').setScale(2);
-    this.player.setCollideWorldBounds(true);
+    
 
     this.platforms = this.physics.add.staticGroup();
     this.platforms.create(160, 580, 'platform1').setScale(.5).refreshBody();
+    this.player.setCollideWorldBounds(true);
     this.physics.add.collider(this.player, this.platforms);
 
   /* this.anims.create({
