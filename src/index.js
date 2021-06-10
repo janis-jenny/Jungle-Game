@@ -1,17 +1,23 @@
 import Phaser from 'phaser';
-import config from './config/config';
-import GameScene from './scenes/GameScene';
+import MainScene from './scenes/MainScene';
 import BootScene from './scenes/BootScene';
 import PreloaderScene from './scenes/PreloaderScene';
- 
-class Game extends Phaser.Game {
-  constructor () {
-    super(config);
-    this.scene.add('Boot', BootScene);
-    this.scene.add('Preloader', PreloaderScene);
-    this.scene.add('Game', GameScene);
-    this.scene.start('Game');
-  }
-}
- 
-window.game = new Game();
+
+const config = {
+  type: Phaser.AUTO,
+  width: 800,
+  height: 600,
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { x: 0, y: 0 },
+      enableBody: true,
+    },
+  },
+  scene: [BootScene, MainScene, PreloaderScene],
+};
+
+// eslint-disable-next-line no-unused-vars
+const game = new Phaser.Game(config);
+game.score = 0;
+export default game;
