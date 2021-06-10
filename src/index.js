@@ -5,12 +5,12 @@ import PreloaderScene from './scenes/PreloaderScene';
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: 1260,
+  height: 585,
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 200 },
+      gravity: { y: 100 },
       enableBody: true,
     },
   },
