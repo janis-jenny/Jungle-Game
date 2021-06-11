@@ -14,7 +14,7 @@ export default class MainScene extends Phaser.Scene {
     // load images
     
     this.load.image('bg', bg);
-    this.load.spritesheet('gamora_walk', gamoraWalk, { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('gamora_walk', gamoraWalk, { frameWidth: 30, frameHeight: 36 });
     this.load.image('platform1', platform1);
 
   }
@@ -23,13 +23,19 @@ export default class MainScene extends Phaser.Scene {
   create() {
     // super.create();
     this.add.image(400, 300, 'bg');
-    this.player = this.physics.add.image(250, 380, 'gamora_walk').setScale(2);
+    this.player = this.physics.add.sprite(250, 420, 'gamora_walk').setScale(1.5);
     
 
     this.platforms = this.physics.add.staticGroup();
     this.platforms.create(160, 580, 'platform1').setScale(.5).refreshBody();
     this.player.setCollideWorldBounds(true);
-    this.physics.add.collider(this.player, this.platforms);
+    this.physics.add.collider(this.player, this.platforms, function(){
+ 
+      // play "run" animation if the player is on a platform
+      if(!this.player.anims.isPlaying){
+          this.player.anims.play('right');
+      }
+    }, null, this);
 
   /* this.anims.create({
       key: 'left',
@@ -44,12 +50,12 @@ export default class MainScene extends Phaser.Scene {
       frameRate: 20
   }); */
 
-  this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers('gamora_walk', { start: 0, end: 4 }),
-      frameRate: 10,
-      repeat: -1
-  });
+    this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('gamora_walk', { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+    });
     
     
 
