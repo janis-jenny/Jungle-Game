@@ -16,18 +16,18 @@ export default class MainScene extends Phaser.Scene {
     // load images
     
     this.load.image('bg', bg);
-    this.load.image('platform1', platform1);
+    this.load.image('platform', platform1);
     this.load.spritesheet('gamora_walk', gamoraWalk, { frameWidth: 30, frameHeight: 36 });
   }
 
 
   create() {
     gameState.active = true;
-    this.add.image(0, 0, 'bg');
+    this.add.image(630, 292, 'bg');
     
     
     const platforms = this.physics.add.staticGroup();
-    platforms.create(160, 580, 'platform1').setScale(.5);
+    platforms.create(160, 580, 'platform').setScale(.3).refreshBody();
     
     
       /* , function(){
@@ -38,12 +38,18 @@ export default class MainScene extends Phaser.Scene {
       }
     }, null, this */
  
-    gameState.player = this.physics.add.sprite(100, 420, 'gamora_walk').setScale(1.5);
+    gameState.player = this.physics.add.sprite(60, 400, 'gamora_walk').setScale(1.5);
     this.anims.create({
         key: 'run',
         frames: this.anims.generateFrameNumbers('gamora_walk', { start: 6, end: 9 }),
         frameRate: 10,
         repeat: -1
+    });
+    this.anims.create({
+      key: 'idle',
+      frames: this.anims.generateFrameNumbers('gamora_walk', { start: 4, end: 5 }),
+      frameRate: .4,
+      repeat: -1
     });
 
   /* this.anims.create({
@@ -77,9 +83,19 @@ export default class MainScene extends Phaser.Scene {
 
     if (gameState.active) {
       if (gameState.cursors.right.isDown) {
-        gameState.player.setVelocityX(350);
+        gameState.player.setVelocityX(280);
         // Add your code below:
 		  	gameState.player.anims.play('run', true);
+      } else if (gameState.cursors.left.isDown) {
+        gameState.player.setVelocityX(-280);
+        gameState.player.anims.play('run', true);
+        // Add your code for step 1 below:
+				gameState.player.flipX = true;
+        
+      } else {
+        gameState.player.setVelocityX(0);
+        // Plays the idle animation if no arrow keys are pressed
+        gameState.player.anims.play('idle', true);
       }
     }
     
