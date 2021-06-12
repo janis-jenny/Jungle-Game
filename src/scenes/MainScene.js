@@ -40,15 +40,21 @@ export default class MainScene extends Phaser.Scene {
  
     gameState.player = this.physics.add.sprite(60, 400, 'gamora_walk').setScale(1.5);
     this.anims.create({
-        key: 'run',
-        frames: this.anims.generateFrameNumbers('gamora_walk', { start: 6, end: 9 }),
-        frameRate: 10,
-        repeat: -1
+      key: 'left',
+      frames: this.anims.generateFrameNumbers('gamora_walk', { start: 0, end: 3 }),
+      frameRate: 10,
+      repeat: -1
     });
     this.anims.create({
       key: 'idle',
-      frames: this.anims.generateFrameNumbers('gamora_walk', { start: 4, end: 5 }),
+      frames:  [ { key: 'gamora_walk', frame: 4 } ],
       frameRate: .4,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'right',
+      frames: this.anims.generateFrameNumbers('gamora_walk', { start: 5, end: 8 }),
+      frameRate: 10,
       repeat: -1
     });
 
@@ -72,31 +78,27 @@ export default class MainScene extends Phaser.Scene {
   }
 
   update() {
-    // Add your conditional statements below:
-    /* if (this.cursors.left.isDown) {
-      this.player.setVelocityX(-160);
-    } else if (this.cursors.right.isDown) {
-      this.player.setVelocityX(160);
-    } else {
-      this.player.setVelocityX(0);
-    } */
-
     if (gameState.active) {
-      if (gameState.cursors.right.isDown) {
-        gameState.player.setVelocityX(280);
-        // Add your code below:
-		  	gameState.player.anims.play('run', true);
-      } else if (gameState.cursors.left.isDown) {
+      if (gameState.cursors.left.isDown) {
         gameState.player.setVelocityX(-280);
-        gameState.player.anims.play('run', true);
-        // Add your code for step 1 below:
-				gameState.player.flipX = true;
+        // Add your code below:
+		  	gameState.player.anims.play('left', true);
+      } else if (gameState.cursors.right.isDown) {
+        gameState.player.setVelocityX(280);
+        gameState.player.anims.play('right', true);
+/*         // Add your code for step 1 below:
+				gameState.player.flipX = true; */
         
       } else {
         gameState.player.setVelocityX(0);
         // Plays the idle animation if no arrow keys are pressed
         gameState.player.anims.play('idle', true);
       }
+    }
+    
+    if (gameState.cursors.up.isDown && gameState.player.body.touching.down)
+    {
+      gameState.player.setVelocityY(-250);
     }
     
   }
