@@ -20,7 +20,5 @@ const config = {
 // eslint-disable-next-line no-unused-vars
 const game = new Phaser.Game(config);
 game.score = 0;
-window.focus();
-resize();
-window.addEventListener("resize", resize, false);
+
 export default game;

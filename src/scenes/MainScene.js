@@ -16,7 +16,9 @@ export default class MainScene extends Phaser.Scene {
     // load images
     
     this.load.image('bg', bg);
-    this.load.image('platform', platform1);
+    this.load.image('platform1', platform1);
+    this.load.image('platform2', platform2);
+    this.load.image('platform3', platform3);
     this.load.spritesheet('gamora_walk', gamoraWalk, { frameWidth: 30, frameHeight: 36 });
   }
 
@@ -25,20 +27,30 @@ export default class MainScene extends Phaser.Scene {
     gameState.active = true;
     this.add.image(630, 292, 'bg');
     
-    
     const platforms = this.physics.add.staticGroup();
-    platforms.create(160, 580, 'platform').setScale(.3).refreshBody();
-    
-    
-      /* , function(){
+    const plat1Positions = [
+      { x: 280, y: 580 }, { x: 430, y: 580 }, { x: 750, y: 580 }, { x: 900, y: 580 },
+    ];
+    plat1Positions.forEach(plat => {
+      platforms.create(plat.x, plat.y, 'platform1').setScale(.3).refreshBody();
+    });
+
+    const plat2Positions = [
+      { x: 320, y: 330 }, { x: 530, y: 200 }, { x: 820, y: 395 },
+    ];
+    plat2Positions.forEach(plat => {
+      platforms.create(plat.x, plat.y, 'platform2').setScale(.3).refreshBody();
+    });
+
+    const plat3Positions = [
+      { x: 70, y: 585 },
+    ];
+    plat3Positions.forEach(plat => {
+      platforms.create(plat.x, plat.y, 'platform3').setScale(.6).refreshBody();
+    });
+   
  
-      // play "run" animation if the player is on a platform
-      if(!this.player.anims.isPlaying){
-          this.player.anims.play('run');
-      }
-    }, null, this */
- 
-    gameState.player = this.physics.add.sprite(60, 400, 'gamora_walk').setScale(1.5);
+    gameState.player = this.physics.add.sprite(90, 420, 'gamora_walk').setScale(1.5);
     this.anims.create({
       key: 'left',
       frames: this.anims.generateFrameNumbers('gamora_walk', { start: 0, end: 3 }),
@@ -58,19 +70,6 @@ export default class MainScene extends Phaser.Scene {
       repeat: -1
     });
 
-  /* this.anims.create({
-      key: 'turn',
-      frames: [ { key: 'dude', frame: 4 } ],
-      frameRate: 20
-  });
-
-    this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('gamora_walk', { start: 6, end: 7 }),
-        frameRate: 10,
-        repeat: -1
-    });
-     */
     this.physics.add.collider(gameState.player, platforms);
     gameState.player.setCollideWorldBounds(true);
     gameState.cursors = this.input.keyboard.createCursorKeys();
@@ -81,17 +80,12 @@ export default class MainScene extends Phaser.Scene {
     if (gameState.active) {
       if (gameState.cursors.left.isDown) {
         gameState.player.setVelocityX(-280);
-        // Add your code below:
 		  	gameState.player.anims.play('left', true);
       } else if (gameState.cursors.right.isDown) {
         gameState.player.setVelocityX(280);
         gameState.player.anims.play('right', true);
-/*         // Add your code for step 1 below:
-				gameState.player.flipX = true; */
-        
       } else {
         gameState.player.setVelocityX(0);
-        // Plays the idle animation if no arrow keys are pressed
         gameState.player.anims.play('idle', true);
       }
     }
