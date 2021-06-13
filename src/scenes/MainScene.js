@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-// import sceneoptions from '../config/sceneoptions';
+import sceneoptions from '../config/sceneoptions';
 import bg from '../assets/bg.png'
 import gamoraWalk from '../assets/gamora_walk.png'
 import platform1 from '../assets/platform1.png'
@@ -15,8 +15,6 @@ export default class MainScene extends Phaser.Scene {
   }
 
   preload() {
-    // load images
-    
     this.load.image('bg', bg);
     this.load.image('platform1', platform1);
     this.load.image('platform2', platform2);
@@ -52,8 +50,7 @@ export default class MainScene extends Phaser.Scene {
     plat3Positions.forEach(plat => {
       platforms.create(plat.x, plat.y, 'platform3').setScale(.6).refreshBody();
     });
-   
- 
+
     gameState.player = this.physics.add.sprite(90, 420, 'gamora_walk').setScale(1.5);
     this.anims.create({
       key: 'left',
@@ -88,18 +85,23 @@ export default class MainScene extends Phaser.Scene {
       setXY: { x: 300, y: 0, stepX: 70 }
     }); 
    
+    // setting coin animation
     this.anims.create({
+      key: 'rotate',
+      frames: this.anims.generateFrameNumbers('coin', {
+          start: 0,
+          end: 3
+      }),
+      frameRate: 15,
+      yoyo: true,
+      repeat: -1
+    });
+    /* this.anims.create({
       key: 'movement',
       frames: this.anims.generateFrameNumbers('coin', { start: 0, end: 3 }),
       frameRate: 10,
       repeat: -1
-    })
-/*     this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers('coin', { start: 0, end: 3 }),
-      frameRate: 10,
-      repeat: -1
-    }); */
+    }) */
     
     coins.children.iterate(function (child) {
       child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8)).setScale(2.3);
@@ -107,7 +109,14 @@ export default class MainScene extends Phaser.Scene {
    
     this.physics.add.collider(coins, platforms);
     // makes an overlap event for when the player gets an item
-    this.physics.add.overlap(gameState.player, coins, this.collectCoin, null, this); 
+    this.physics.add.overlap(gameState.player, coins, this.collectCoin, null, this);
+
+    // Adding events to interact with the character
+    this.input.keyboard.on('keydown-UP', this.jump, this);
+    this.input.on('pointerdown', this.jump, this);
+
+    // Sets the jumps to 0 for the double jump
+    this.jumps = 0;
   }
 
   update() {
@@ -125,8 +134,18 @@ export default class MainScene extends Phaser.Scene {
     }
     
     if (gameState.cursors.up.isDown && gameState.player.body.touching.down)
-    {
+    { 
+
       gameState.player.setVelocityY(-250);
+      this.jumps = 0;
+    }
+    
+  }
+
+  jump() {
+    if (this.player.body.touching.down || this.jumps < 2) {
+      this.player.setVelocityY(sceneoptions.jumpForce * -1);
+      this.jumps += 1;
     }
   }
    
