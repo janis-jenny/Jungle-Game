@@ -1,9 +1,11 @@
 import Phaser from 'phaser';
+import sceneoptions from '../config/sceneoptions';
 import bg from '../assets/bg.png'
 import gamoraWalk from '../assets/gamora_walk.png'
 import platform1 from '../assets/platform1.png'
 import platform2 from '../assets/platform2.png'
 import platform3 from '../assets/platform3.png'
+import coin from '../assets/Coin.png'
 
 const gameState = {};
 
@@ -20,10 +22,14 @@ export default class MainScene extends Phaser.Scene {
     this.load.image('platform2', platform2);
     this.load.image('platform3', platform3);
     this.load.spritesheet('gamora_walk', gamoraWalk, { frameWidth: 30, frameHeight: 36 });
+  
+    this.load.spritesheet('coin', coin, { frameWidth: 9, frameHeight: 10 });
   }
 
 
   create() {
+    const { platformStartSpeed } = sceneoptions;
+    this.activeItems = [];
     gameState.active = true;
     this.add.image(630, 292, 'bg');
     
@@ -71,9 +77,35 @@ export default class MainScene extends Phaser.Scene {
     });
 
     this.physics.add.collider(gameState.player, platforms);
+    
+
     gameState.player.setCollideWorldBounds(true);
     gameState.cursors = this.input.keyboard.createCursorKeys();
 
+    /* const coins = this.physics.add.group({
+      key: 'coin',
+      
+      repeat: 10,
+      setXY: { x: 300, y: 0, stepX: 70 }
+    }); */
+
+/*     this.anims.create({
+      key: 'idle',
+      frames: this.anims.generateFrameNumbers('coin', { start: 0, end: 3 }),
+      frameRate: 10,
+      repeat: -1
+    }); */
+    
+    /* coins.children.iterate(function (child) {
+      child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8)).setScale(2);
+    });
+
+    function collectCoins () {
+      coins.disableBody(true, true);
+    } 
+    
+    this.physics.add.collider(coins, platforms);
+    this.physics.add.overlap(gameState.player, coins, collectCoins, null, this);  */ 
   }
 
   update() {
@@ -95,5 +127,8 @@ export default class MainScene extends Phaser.Scene {
       gameState.player.setVelocityY(-250);
     }
     
+    
   }
+
+ 
 }
