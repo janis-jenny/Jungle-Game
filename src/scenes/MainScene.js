@@ -7,7 +7,7 @@ import platform2 from '../assets/platform2.png'
 import platform3 from '../assets/platform3.png'
 import coin from '../assets/Coin.png'
 
-const gameState = {};
+const gameState = { score: 0 };
 
 export default class MainScene extends Phaser.Scene {
   constructor() {
@@ -75,7 +75,7 @@ export default class MainScene extends Phaser.Scene {
     this.physics.add.collider(gameState.player, platforms);
     
     // this.physics.add.overlap(gameState.player, this.activeItems, this.collectCoin, null, this);    
-
+    gameState.player.body.bounce.y = 0.2;
     gameState.player.setCollideWorldBounds(true);
     gameState.cursors = this.input.keyboard.createCursorKeys();
 
@@ -105,8 +105,12 @@ export default class MainScene extends Phaser.Scene {
     
     coins.children.iterate(function (child) {
       child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8)).setScale(2.3);
+     
     });
    
+    // Displays initial Score: 0 text
+    gameState.scoreText = this.add.text(600, 30, 'Score: 0', { fontSize: '24px', fill: '#000000' });
+    
     this.physics.add.collider(coins, platforms);
     // makes an overlap event for when the player gets an item
     this.physics.add.overlap(gameState.player, coins, this.collectCoin, null, this);
@@ -152,6 +156,8 @@ export default class MainScene extends Phaser.Scene {
   collectCoin (player, coin) {
     coin.disableBody(true, true);
     player.refreshBody;
+    gameState.score += 10;
+    gameState.scoreText.setText(`Score: ${gameState.score}`) 
   } 
 }
 
