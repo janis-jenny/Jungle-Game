@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import sceneoptions from '../config/sceneoptions';
 import bg from '../assets/bg.png'
 import gamoraWalk from '../assets/gamora_walk.png'
-import platform1 from '../assets/platform1.png'
+import platform1 from '../assets/bigplatform1.png'
 import platform2 from '../assets/platform2.png'
 import platform3 from '../assets/platform3.png'
 import coin from '../assets/Coin.png'
@@ -11,7 +11,7 @@ const gameState = {
   score: 0,
   speed: 240,
   ups: 380,
-  width: 2500,
+  width: 2320,
   height: 585,
  };
 
@@ -24,11 +24,10 @@ export default class MainScene extends Phaser.Scene {
 
   preload() {
     this.load.image('bg', bg);
-    this.load.image('platform1', platform1);
+    this.load.image('bigplatform1', platform1);
     this.load.image('platform2', platform2);
     this.load.image('platform3', platform3);
     this.load.spritesheet('gamora_walk', gamoraWalk, { frameWidth: 30, frameHeight: 36 });
-  
     this.load.spritesheet('coin', coin, { frameWidth: 9, frameHeight: 10 });
   }
   // 
@@ -36,13 +35,17 @@ export default class MainScene extends Phaser.Scene {
 
     gameState.active = true;
     this.add.image(630, 292, 'bg');
-    
+ 
     const platforms = this.physics.add.staticGroup();
-    const plat1Positions = [
-      { x: 290, y: 585 }, { x: 460, y: 585 }, { x: 790, y:  585 }, { x: 960, y:  585 },
+    platforms.enableBody = true;
+    platforms.physicsBodyType = Phaser.Physics.ARCADE;
+
+   const plat1Positions = [
+      { x: 340, y: 585 }, { x: 580, y: 585 }, { x: 1010, y: 585 }, { x: 1250, y:  585 },
+      { x: 1660, y: 585 }, { x: 1900, y:  585 },
     ];
     plat1Positions.forEach(plat => {
-      platforms.create(plat.x, plat.y, 'platform1').setScale(.4).refreshBody();
+      platforms.create(plat.x, plat.y, 'bigplatform1').setScale(.4).refreshBody();
     });
 
     const plat2Positions = [
@@ -74,12 +77,9 @@ export default class MainScene extends Phaser.Scene {
     // Makes a collision between the character and the platforms
     this.physics.add.collider(gameState.player, platforms);
     
-    // this.physics.add.overlap(gameState.player, this.activeItems, this.collectCoin, null, this);    
     gameState.player.body.bounce.y = 0.2;
 
     gameState.cursors = this.input.keyboard.createCursorKeys();
-
-    
 
     const coins = this.physics.add.group({
       key: 'coin',
@@ -138,7 +138,7 @@ export default class MainScene extends Phaser.Scene {
       repeat: -1
     }); */
   }
-
+  
   update() {
     if (gameState.active) {
       if (gameState.cursors.left.isDown) {
@@ -156,26 +156,17 @@ export default class MainScene extends Phaser.Scene {
     if (gameState.cursors.up.isDown && gameState.player.body.touching.down)
     { 
       gameState.player.setVelocityY(-350);
-      this.jumps += 1;
+      this.jumps = 0;
     } 
     
-    /* if (!gameState.player.body.touching.down){
-      gameState.player.anims.play('idle', true);
-    } */
-
     if (gameState.player.y > gameState.height) {
       this.cameras.main.shake(240, .01, false, function(camera, progress) {
         if (progress > .9) {
           this.scene.restart(this.levelKey);
         }
       });
-      // this.scene.add.text( 210, 300, 'Game Over', { fontSize: '15px', fill: '#000000' })
     }
-    /* if (this.gameover()) {
-      this.scene.stop('Game');
-      this.add.text( 210, 300, 'Game Over', { fontSize: '15px', fill: '#000000' })
-      this.scene.start('GameOver');
-    } */
+
   }
 
   jump() {
@@ -191,16 +182,5 @@ export default class MainScene extends Phaser.Scene {
     gameState.score += 10;
     gameState.scoreText.setText(`Score: ${gameState.score}`) 
   } 
-
-  gameover() {
-    // Check player height and add camera shake here!
-    if (gameState.player.y > gameState.height) {
-      this.cameras.main.shake(240, .01, false, function(camera, progress) {
-        if (progress > .9) {
-        this.scene.restart(this.levelKey);
-        }
-      }) 
-    }
-  }
 }
 
