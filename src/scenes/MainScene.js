@@ -60,30 +60,9 @@ export default class MainScene extends Phaser.Scene {
     });
 
     gameState.player = this.physics.add.sprite(90, 420, 'gamora_walk').setScale(1.5);
-    this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers('gamora_walk', { start: 0, end: 3 }),
-      frameRate: 10,
-      repeat: -1
-    });
-    this.anims.create({
-      key: 'idle',
-      frames:  [ { key: 'gamora_walk', frame: 4 } ],
-      frameRate: .4,
-      repeat: -1
-    });
-    this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers('gamora_walk', { start: 5, end: 8 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    // Makes a collision between the character and the platforms
-    this.physics.add.collider(gameState.player, platforms);
     
-    // this.physics.add.overlap(gameState.player, this.activeItems, this.collectCoin, null, this);    
-    gameState.player.body.bounce.y = 0.2;
+
+    this.createAnimations();
 
     // set Cameras here
     this.cameras.main.setBounds(0, 0, gameState.width, gameState.height);
@@ -91,27 +70,23 @@ export default class MainScene extends Phaser.Scene {
     this.cameras.main.startFollow(gameState.player, true, 0.5, 0.5);
 
     gameState.player.setCollideWorldBounds(true);
+
+    // Makes a collision between the character and the platforms
+    this.physics.add.collider(gameState.player, platforms);
+    
+    // this.physics.add.overlap(gameState.player, this.activeItems, this.collectCoin, null, this);    
+    gameState.player.body.bounce.y = 0.2;
+
     gameState.cursors = this.input.keyboard.createCursorKeys();
+
+    
 
     const coins = this.physics.add.group({
       key: 'coin',
       repeat: 10,
       setXY: { x: 300, y: 0, stepX: 70 }
     }); 
-   
-    // setting coin animation
-    this.anims.create({
-      key: 'rotate',
-      frames: this.anims.generateFrameNumbers('coin', {
-          start: 0,
-          end: 3
-      }),
-      frameRate: 15,
-      yoyo: true,
-      repeat: -1
-    });
-
-    
+  
     coins.children.iterate(function (child) {
       child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8)).setScale(2.3);
      
@@ -132,6 +107,38 @@ export default class MainScene extends Phaser.Scene {
     this.jumps = 0;
   }
 
+  createAnimations() {
+    this.anims.create({
+      key: 'left',
+      frames: this.anims.generateFrameNumbers('gamora_walk', { start: 0, end: 3 }),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'idle',
+      frames:  [ { key: 'gamora_walk', frame: 4 } ],
+      frameRate: .4,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'right',
+      frames: this.anims.generateFrameNumbers('gamora_walk', { start: 5, end: 8 }),
+      frameRate: 10,
+      repeat: -1
+    });
+    // setting coin animation
+   /*  this.anims.create({
+      key: 'coin',
+      frames: this.anims.generateFrameNumbers('coin', {
+          start: 0,
+          end: 3
+      }),
+      frameRate: 15,
+      yoyo: true,
+      repeat: -1
+    }); */
+  }
+
   update() {
     if (gameState.active) {
       if (gameState.cursors.left.isDown) {
@@ -148,21 +155,32 @@ export default class MainScene extends Phaser.Scene {
     
     if (gameState.cursors.up.isDown && gameState.player.body.touching.down)
     { 
+      gameState.player.setVelocityY(-350);
+      this.jumps += 1;
+    } 
+    
+    /* if (!gameState.player.body.touching.down){
+      gameState.player.anims.play('idle', true);
+    } */
 
-      gameState.player.setVelocityY(-250);
-      this.jumps = 0;
+    if (gameState.player.y > gameState.height) {
+      this.cameras.main.shake(240, .01, false, function(camera, progress) {
+        if (progress > .9) {
+          this.scene.restart(this.levelKey);
+        }
+      });
+      // this.scene.add.text( 210, 300, 'Game Over', { fontSize: '15px', fill: '#000000' })
     }
-
-    if (this.gameover()) {
+    /* if (this.gameover()) {
       this.scene.stop('Game');
       this.add.text( 210, 300, 'Game Over', { fontSize: '15px', fill: '#000000' })
       this.scene.start('GameOver');
-    }
+    } */
   }
 
   jump() {
-    if (this.player.body.touching.down || this.jumps < 2) {
-      this.player.setVelocityY(sceneoptions.jumpForce * -1);
+    if (gameState.player.body.touching.down || this.jumps < 2) {
+      gameState.player.setVelocityY(sceneoptions.jumpForce * -1);
       this.jumps += 1;
     }
   }
@@ -175,11 +193,14 @@ export default class MainScene extends Phaser.Scene {
   } 
 
   gameover() {
-    if (gameState.player.y > 585 + (gameState.player.height / 2)) {
-      return true;
+    // Check player height and add camera shake here!
+    if (gameState.player.y > gameState.height) {
+      this.cameras.main.shake(240, .01, false, function(camera, progress) {
+        if (progress > .9) {
+        this.scene.restart(this.levelKey);
+        }
+      }) 
     }
-
-    return false;
   }
 }
 
