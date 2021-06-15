@@ -7,11 +7,19 @@ import platform2 from '../assets/platform2.png'
 import platform3 from '../assets/platform3.png'
 import coin from '../assets/Coin.png'
 
-const gameState = { score: 0 };
+const gameState = { 
+  score: 0,
+  speed: 240,
+  ups: 380,
+  width: 2500,
+  height: 585,
+ };
 
 export default class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: 'MainScene' });
+    this.levelKey = MainScene
+
   }
 
   preload() {
@@ -23,7 +31,7 @@ export default class MainScene extends Phaser.Scene {
   
     this.load.spritesheet('coin', coin, { frameWidth: 9, frameHeight: 10 });
   }
-
+  // 
   create() {
 
     gameState.active = true;
@@ -31,10 +39,10 @@ export default class MainScene extends Phaser.Scene {
     
     const platforms = this.physics.add.staticGroup();
     const plat1Positions = [
-      { x: 280, y: 580 }, { x: 430, y: 580 }, { x: 750, y: 580 }, { x: 900, y: 580 },
+      { x: 290, y: 585 }, { x: 460, y: 585 }, { x: 790, y:  585 }, { x: 960, y:  585 },
     ];
     plat1Positions.forEach(plat => {
-      platforms.create(plat.x, plat.y, 'platform1').setScale(.3).refreshBody();
+      platforms.create(plat.x, plat.y, 'platform1').setScale(.4).refreshBody();
     });
 
     const plat2Positions = [
@@ -76,6 +84,12 @@ export default class MainScene extends Phaser.Scene {
     
     // this.physics.add.overlap(gameState.player, this.activeItems, this.collectCoin, null, this);    
     gameState.player.body.bounce.y = 0.2;
+
+    // set Cameras here
+    this.cameras.main.setBounds(0, 0, gameState.width, gameState.height);
+    this.physics.world.setBounds(0, 0, gameState.width, gameState.height);
+    this.cameras.main.startFollow(gameState.player, true, 0.5, 0.5);
+
     gameState.player.setCollideWorldBounds(true);
     gameState.cursors = this.input.keyboard.createCursorKeys();
 
@@ -96,12 +110,7 @@ export default class MainScene extends Phaser.Scene {
       yoyo: true,
       repeat: -1
     });
-    /* this.anims.create({
-      key: 'movement',
-      frames: this.anims.generateFrameNumbers('coin', { start: 0, end: 3 }),
-      frameRate: 10,
-      repeat: -1
-    }) */
+
     
     coins.children.iterate(function (child) {
       child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8)).setScale(2.3);
@@ -143,7 +152,12 @@ export default class MainScene extends Phaser.Scene {
       gameState.player.setVelocityY(-250);
       this.jumps = 0;
     }
-    
+
+    if (this.gameover()) {
+      this.scene.stop('Game');
+      this.add.text( 210, 300, 'Game Over', { fontSize: '15px', fill: '#000000' })
+      this.scene.start('GameOver');
+    }
   }
 
   jump() {
@@ -159,5 +173,13 @@ export default class MainScene extends Phaser.Scene {
     gameState.score += 10;
     gameState.scoreText.setText(`Score: ${gameState.score}`) 
   } 
+
+  gameover() {
+    if (gameState.player.y > 585 + (gameState.player.height / 2)) {
+      return true;
+    }
+
+    return false;
+  }
 }
 
