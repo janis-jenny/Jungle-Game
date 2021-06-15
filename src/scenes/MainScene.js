@@ -7,6 +7,7 @@ import platform2 from '../assets/platform2.png'
 import platform3 from '../assets/platform3.png'
 import coin from '../assets/Coin.png'
 
+
 const gameState = { 
   score: 0,
   speed: 240,
@@ -18,8 +19,8 @@ const gameState = {
 export default class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: 'MainScene' });
+    this.heights = [null, 5, 2, null, 4, 3, 5, 2, 8, 4, 3];
     this.levelKey = MainScene
-
   }
 
   preload() {
@@ -37,10 +38,9 @@ export default class MainScene extends Phaser.Scene {
     this.add.image(630, 292, 'bg');
  
     const platforms = this.physics.add.staticGroup();
-    platforms.enableBody = true;
-    platforms.physicsBodyType = Phaser.Physics.ARCADE;
+    gameState.platforms = this.physics.add.staticGroup();
 
-   const plat1Positions = [
+    const plat1Positions = [
       { x: 340, y: 585 }, { x: 580, y: 585 }, { x: 1010, y: 585 }, { x: 1250, y:  585 },
       { x: 1660, y: 585 }, { x: 1900, y:  585 },
     ];
@@ -48,12 +48,12 @@ export default class MainScene extends Phaser.Scene {
       platforms.create(plat.x, plat.y, 'bigplatform1').setScale(.4).refreshBody();
     });
 
-    const plat2Positions = [
+ /*    const plat2Positions = [
       { x: 320, y: 330 }, { x: 530, y: 200 }, { x: 820, y: 395 },
     ];
     plat2Positions.forEach(plat => {
       platforms.create(plat.x, plat.y, 'platform2').setScale(.3).refreshBody();
-    });
+    }); */
 
     const plat3Positions = [
       { x: 70, y: 585 },
@@ -64,18 +64,19 @@ export default class MainScene extends Phaser.Scene {
 
     gameState.player = this.physics.add.sprite(90, 420, 'gamora_walk').setScale(1.5);
     
-
     this.createAnimations();
+    this.levelSetup();
 
     // set Cameras here
     this.cameras.main.setBounds(0, 0, gameState.width, gameState.height);
     this.physics.world.setBounds(0, 0, gameState.width, gameState.height);
     this.cameras.main.startFollow(gameState.player, true, 0.5, 0.5);
-
-    gameState.player.setCollideWorldBounds(false);
-
+ 
+    gameState.player.setCollideWorldBounds(true);
+    
     // Makes a collision between the character and the platforms
     this.physics.add.collider(gameState.player, platforms);
+    this.physics.add.collider(gameState.player, gameState.platforms);
     
     gameState.player.body.bounce.y = 0.2;
 
@@ -96,6 +97,7 @@ export default class MainScene extends Phaser.Scene {
     gameState.scoreText = this.add.text(600, 30, 'Score: 0', { fontSize: '24px', fill: '#000000' });
     
     this.physics.add.collider(coins, platforms);
+    this.physics.add.collider(coins, gameState.platforms);
     // makes an overlap event for when the player gets an item
     this.physics.add.overlap(gameState.player, coins, this.collectCoin, null, this);
 
@@ -105,6 +107,16 @@ export default class MainScene extends Phaser.Scene {
 
     // Sets the jumps to 0 for the double jump
     this.jumps = 0;
+    
+  }
+
+  createPlatform(xIndex, yIndex) {
+    // Creates a platform evenly spaced along the two indices.
+    // gameState.platforms = this.physics.add.staticGroup();
+    // If either is not a number it won't make a platform
+      if (typeof yIndex === 'number' && typeof xIndex === 'number') {
+        gameState.platforms.create((220 * xIndex),  yIndex * 70, 'platform2').setOrigin(0, 0.5).setScale(.3).refreshBody();
+      } 
   }
 
   createAnimations() {
@@ -139,6 +151,13 @@ export default class MainScene extends Phaser.Scene {
     }); */
   }
   
+  levelSetup() {
+    for (const [xIndex, yIndex] of this.heights.entries()) {
+      // call createPlatform here with xIndex and yIndex
+    this.createPlatform(xIndex, yIndex) 
+    } 
+  }
+
   update() {
     if (gameState.active) {
       if (gameState.cursors.left.isDown) {
@@ -157,18 +176,21 @@ export default class MainScene extends Phaser.Scene {
     { 
       gameState.player.setVelocityY(-350);
       this.jumps = 0;
-    } 
+    }
     
-    if (gameState.player.y > gameState.height) {
-      this.cameras.main.shake(240, .01, false, function(camera, progress) {
-        if (progress > .9) {
-          this.scene.restart(this.levelKey);
-        }
-      });
+ 
+    if (gameState.player.y === (gameState.height - 36)) {
+      gameState.player.body.allowGravity = true; 
+      if (gameState.player.y > gameState.height) {
+        this.cameras.main.shake(240, .01, false, function(camera, progress) {
+          if (progress > .9) {
+            this.scene.restart(this.levelKey);
+          }
+        });
+      }
     }
 
   }
-
   jump() {
     if (gameState.player.body.touching.down || this.jumps < 2) {
       gameState.player.setVelocityY(sceneoptions.jumpForce * -1);
