@@ -8,6 +8,8 @@ import platform3 from '../assets/platform3.png'
 import coin from '../assets/coin.png'
 import tresure from '../assets/chest.png'
 import orc1 from '../assets/orc.png'
+import orc2 from '../assets/orcHunter.png'
+import orc3 from '../assets/orcWarrior.png'
 
 const gameState = { 
   score: 0,
@@ -33,7 +35,8 @@ export default class MainScene extends Phaser.Scene {
     this.load.spritesheet('coin', coin, { frameWidth: 9.5, frameHeight: 10 });
     this.load.spritesheet('chest', tresure, { frameWidth: 32, frameHeight: 32 });
     this.load.spritesheet('orc1', orc1, { frameWidth: 48, frameHeight: 64 });
-
+    this.load.spritesheet('orc2', orc2, { frameWidth: 48, frameHeight: 64 });
+    this.load.spritesheet('orc3', orc3, { frameWidth: 48, frameHeight: 64 });
   }
   // 
   create() {
@@ -71,6 +74,8 @@ export default class MainScene extends Phaser.Scene {
     gameState.exit = this.physics.add.sprite(2250, 200, 'chest').setScale(1.5);
 
     gameState.enemy1 = this.physics.add.sprite(320, 400, 'orc1');
+    gameState.enemy2 = this.physics.add.sprite(990, 400, 'orc2');
+    gameState.enemy3 = this.physics.add.sprite(1640, 400, 'orc3');
     
     this.createAnimations();
     this.levelSetup();
@@ -86,6 +91,8 @@ export default class MainScene extends Phaser.Scene {
     const platformsCollider = this.physics.add.collider(gameState.player, platforms);
     this.physics.add.collider(gameState.player, gameState.platforms);
     this.physics.add.collider(gameState.enemy1, platforms);  
+    this.physics.add.collider(gameState.enemy2, platforms);
+    this.physics.add.collider(gameState.enemy3, platforms); 
     
     gameState.player.body.bounce.y = 0.2;
 
@@ -111,6 +118,9 @@ export default class MainScene extends Phaser.Scene {
     
     gameState.exit.anims.play('movement');
     gameState.enemy1.anims.play('orc1Alert');
+    gameState.enemy2.anims.play('orc2Alert');
+    gameState.enemy3.anims.play('orc3Alert');
+
     
     // makes an overlap event for when the player gets an item
     this.physics.add.overlap(gameState.player, coins, this.collectCoin, null, this);
@@ -132,15 +142,15 @@ export default class MainScene extends Phaser.Scene {
 
     
     gameState.moveTween = this.tweens.add({
-      targets: gameState.enemy1,
-      x: 570,
-      duration: 3000,
-      ease: 'Power2',
+      targets: [gameState.enemy1, gameState.enemy2, gameState.enemy3],
+      props: {
+        x: { value: '+=250', duration: 3000, ease: 'Power2' },
+      },
       yoyo: true,
       repeat: -1
     });
 
-    this.physics.add.overlap(gameState.player, gameState.enemy1, function() {
+    this.physics.add.overlap(gameState.player, [gameState.enemy1, gameState.enemy2, gameState.enemy3], function() {
       // Add in the collider that will fade out to the next level here
       this.cameras.main.shake(290, .01, false);
       this.add.text(1120, 100, 'Game Over', { fontSize: '24px', fill: '#000000' })
@@ -183,7 +193,6 @@ export default class MainScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
-    // setting coin animation
     this.anims.create({
       key: 'rotate',
       frames: this.anims.generateFrameNumbers('coin', {
@@ -201,10 +210,21 @@ export default class MainScene extends Phaser.Scene {
       yoyo: true,
       repeat: -1
     });
-
     this.anims.create({
       key: 'orc1Alert',
       frames: this.anims.generateFrameNumbers('orc1', { start: 3, end: 5 }),
+      frameRate: 4,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'orc2Alert',
+      frames: this.anims.generateFrameNumbers('orc2', { start: 3, end: 5 }),
+      frameRate: 4,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'orc3Alert',
+      frames: this.anims.generateFrameNumbers('orc3', { start: 3, end: 5 }),
       frameRate: 4,
       repeat: -1
     });
