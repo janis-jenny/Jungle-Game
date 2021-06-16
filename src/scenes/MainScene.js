@@ -83,7 +83,7 @@ export default class MainScene extends Phaser.Scene {
     gameState.player.setCollideWorldBounds(true);
     
     // Makes a collision between the character and the platforms
-    this.physics.add.collider(gameState.player, platforms);
+    const platformsCollider = this.physics.add.collider(gameState.player, platforms);
     this.physics.add.collider(gameState.player, gameState.platforms);
     this.physics.add.collider(gameState.enemy1, platforms);  
     
@@ -130,17 +130,32 @@ export default class MainScene extends Phaser.Scene {
     // Sets the jumps to 0 for the double jump
     this.jumps = 0;
 
+    
     gameState.moveTween = this.tweens.add({
       targets: gameState.enemy1,
-      x: 500,
+      x: 570,
       duration: 3000,
       ease: 'Power2',
       yoyo: true,
       repeat: -1
     });
-    
-  }
 
+    this.physics.add.overlap(gameState.player, gameState.enemy1, function() {
+      // Add in the collider that will fade out to the next level here
+      this.cameras.main.shake(290, .01, false);
+      this.add.text(1120, 100, 'Game Over', { fontSize: '24px', fill: '#000000' })
+      this.cameras.main.fade(800, 0, 0, 0, false, function(camera, progress) { 
+        if (progress > .9) {
+          
+          this.scene.restart(this.levelKey)
+        } else {
+          gameState.player.body.setVelocityY(-200);
+          gameState.player.setTint(0xff0000);
+          gameState.player.anims.play('idle');
+        }
+      })
+    }, null, this);
+  }
   createPlatform(xIndex, yIndex) {
     // Creates a platform evenly spaced along the two indices.
     // If either is not a number it won't make a platform
@@ -222,17 +237,14 @@ export default class MainScene extends Phaser.Scene {
       this.jumps = 0;
     }
     
- 
-    if (gameState.player.y === gameState.height ) {
-      gameState.player.velocity.y = 300; 
-      if (gameState.player.y > gameState.height) {
-        this.cameras.main.shake(240, .01, false, function(camera, progress) {
-          if (progress > .9) {
-            this.scene.restart(this.levelKey);
-          }
-        });
-      }
+    if (gameState.player.y > gameState.height) {
+      this.cameras.main.shake(240, .01, false, function(camera, progress) {
+        if (progress > .9) {
+          this.scene.restart(this.levelKey);
+        }
+      });
     }
+    
   }
 
   jump() {
