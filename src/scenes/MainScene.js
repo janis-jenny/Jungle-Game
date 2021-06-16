@@ -5,7 +5,8 @@ import gamoraWalk from '../assets/gamora_walk.png'
 import platform1 from '../assets/bigplatform1.png'
 import platform2 from '../assets/platform2.png'
 import platform3 from '../assets/platform3.png'
-import coin from '../assets/Coin.png'
+import coin from '../assets/coin.png'
+import tresure from '../assets/chest.png'
 
 const gameState = { 
   score: 0,
@@ -29,6 +30,7 @@ export default class MainScene extends Phaser.Scene {
     this.load.image('platform3', platform3);
     this.load.spritesheet('gamora_walk', gamoraWalk, { frameWidth: 30, frameHeight: 36 });
     this.load.spritesheet('coin', coin, { frameWidth: 9.5, frameHeight: 10 });
+    this.load.spritesheet('chest', tresure, { frameWidth: 32, frameHeight: 32 });
   }
   // 
   create() {
@@ -62,6 +64,8 @@ export default class MainScene extends Phaser.Scene {
     });
 
     gameState.player = this.physics.add.sprite(90, 420, 'gamora_walk').setScale(1.5);
+
+    gameState.exit = this.physics.add.sprite(2250, 200, 'chest').setScale(1.5);
     
     this.createAnimations();
     this.levelSetup();
@@ -83,23 +87,35 @@ export default class MainScene extends Phaser.Scene {
 
     const coins = this.physics.add.group({
       key: 'coin',
-      repeat: 22,
-      setXY: { x: 300, y: 0, stepX: 80 }
+      repeat: 36,
+      setXY: { x: 250, y: 0, stepX: 50 }
     });
 
     coins.children.iterate(function (child) {
       child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8)).setScale(2.3);
-      child.anims.play('rotate')
+      child.anims.play('rotate');
     });
-   
+       
     // Displays initial Score: 0 text
-    gameState.scoreText = this.add.text(600, 30, 'Score: 0', { fontSize: '24px', fill: '#000000' });
+    gameState.scoreText = this.add.text(1150, 30, 'Score: 0', { fontFamily: 'Arial', fontSize: '24px', fill: '#000000' });
     
     this.physics.add.collider(coins, platforms);
     this.physics.add.collider(coins, gameState.platforms);
+    this.physics.add.collider(gameState.exit, platforms);
+
+    gameState.exit.anims.play('movement');
+    
     // makes an overlap event for when the player gets an item
     this.physics.add.overlap(gameState.player, coins, this.collectCoin, null, this);
-
+    
+    this.physics.add.overlap(gameState.player, gameState.exit, function() {
+      // Add in the collider that will fade out to the next level here
+      this.cameras.main.fade(800, 0, 0, 0, false, function(camera, progress) { 
+        if (progress > .9) {
+          this.scene.restart(this.levelKey)
+        }
+      })
+    }, null, this)
     // Adding events to interact with the character
     this.input.keyboard.on('keydown-UP', this.jump, this);
     this.input.on('pointerdown', this.jump, this);
@@ -145,6 +161,13 @@ export default class MainScene extends Phaser.Scene {
           end: 3
       }),
       frameRate: 15,
+      yoyo: true,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'movement',
+      frames: this.anims.generateFrameNumbers('chest', { start: 0, end: 3 }),
+      frameRate: 10,
       yoyo: true,
       repeat: -1
     });
