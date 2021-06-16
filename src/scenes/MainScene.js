@@ -7,6 +7,7 @@ import platform2 from '../assets/platform2.png'
 import platform3 from '../assets/platform3.png'
 import coin from '../assets/coin.png'
 import tresure from '../assets/chest.png'
+import orc1 from '../assets/orc.png'
 
 const gameState = { 
   score: 0,
@@ -31,6 +32,8 @@ export default class MainScene extends Phaser.Scene {
     this.load.spritesheet('gamora_walk', gamoraWalk, { frameWidth: 30, frameHeight: 36 });
     this.load.spritesheet('coin', coin, { frameWidth: 9.5, frameHeight: 10 });
     this.load.spritesheet('chest', tresure, { frameWidth: 32, frameHeight: 32 });
+    this.load.spritesheet('orc1', orc1, { frameWidth: 48, frameHeight: 64 });
+
   }
   // 
   create() {
@@ -66,6 +69,8 @@ export default class MainScene extends Phaser.Scene {
     gameState.player = this.physics.add.sprite(90, 420, 'gamora_walk').setScale(1.5);
 
     gameState.exit = this.physics.add.sprite(2250, 200, 'chest').setScale(1.5);
+
+    gameState.enemy1 = this.physics.add.sprite(320, 400, 'orc1');
     
     this.createAnimations();
     this.levelSetup();
@@ -80,6 +85,7 @@ export default class MainScene extends Phaser.Scene {
     // Makes a collision between the character and the platforms
     this.physics.add.collider(gameState.player, platforms);
     this.physics.add.collider(gameState.player, gameState.platforms);
+    this.physics.add.collider(gameState.enemy1, platforms);  
     
     gameState.player.body.bounce.y = 0.2;
 
@@ -98,12 +104,13 @@ export default class MainScene extends Phaser.Scene {
        
     // Displays initial Score: 0 text
     gameState.scoreText = this.add.text(1150, 30, 'Score: 0', { fontFamily: 'Arial', fontSize: '24px', fill: '#000000' });
-    
+
     this.physics.add.collider(coins, platforms);
     this.physics.add.collider(coins, gameState.platforms);
     this.physics.add.collider(gameState.exit, platforms);
-
+    
     gameState.exit.anims.play('movement');
+    gameState.enemy1.anims.play('orc1Alert');
     
     // makes an overlap event for when the player gets an item
     this.physics.add.overlap(gameState.player, coins, this.collectCoin, null, this);
@@ -122,12 +129,20 @@ export default class MainScene extends Phaser.Scene {
 
     // Sets the jumps to 0 for the double jump
     this.jumps = 0;
+
+    gameState.moveTween = this.tweens.add({
+      targets: gameState.enemy1,
+      x: 500,
+      duration: 3000,
+      ease: 'Power2',
+      yoyo: true,
+      repeat: -1
+    });
     
   }
 
   createPlatform(xIndex, yIndex) {
     // Creates a platform evenly spaced along the two indices.
-    // gameState.platforms = this.physics.add.staticGroup();
     // If either is not a number it won't make a platform
       if (typeof yIndex === 'number' && typeof xIndex === 'number') {
         gameState.platforms.create((205 * xIndex),  yIndex * 70, 'platform2').setOrigin(0, 0.5).setScale(.3).refreshBody();
@@ -171,6 +186,13 @@ export default class MainScene extends Phaser.Scene {
       yoyo: true,
       repeat: -1
     });
+
+    this.anims.create({
+      key: 'orc1Alert',
+      frames: this.anims.generateFrameNumbers('orc1', { start: 3, end: 5 }),
+      frameRate: 4,
+      repeat: -1
+    });
   }
   
   levelSetup() {
@@ -201,8 +223,8 @@ export default class MainScene extends Phaser.Scene {
     }
     
  
-    if (gameState.player.y === (gameState.height - 36)) {
-      gameState.player.body.allowGravity = true; 
+    if (gameState.player.y === gameState.height ) {
+      gameState.player.velocity.y = 300; 
       if (gameState.player.y > gameState.height) {
         this.cameras.main.shake(240, .01, false, function(camera, progress) {
           if (progress > .9) {
