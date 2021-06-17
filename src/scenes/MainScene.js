@@ -31,7 +31,7 @@ export default class MainScene extends Phaser.Scene {
     this.load.image('bigplatform1', platform1);
     this.load.image('platform2', platform2);
     this.load.image('platform3', platform3);
-    this.load.spritesheet('gamora_walk', gamoraWalk, { frameWidth: 30, frameHeight: 36 });
+    this.load.spritesheet('gamora_walk', gamoraWalk, { frameWidth: 30, frameHeight: 32 });
     this.load.spritesheet('coin', coin, { frameWidth: 9.5, frameHeight: 10 });
     this.load.spritesheet('chest', tresure, { frameWidth: 32, frameHeight: 32 });
     this.load.spritesheet('orc1', orc1, { frameWidth: 48, frameHeight: 64 });
