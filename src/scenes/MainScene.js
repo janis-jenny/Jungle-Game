@@ -17,7 +17,7 @@ const gameState = {
   ups: 380,
   width: 2332,
   height: 585,
- };
+};
 
 export default class MainScene extends Phaser.Scene {
   constructor() {

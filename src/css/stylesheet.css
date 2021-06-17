@@ -1,0 +1,16 @@
+.playername {
+  position: absolute;
+  bottom: 16rem;
+  left: 17rem;
+  outline: none;
+  border: none;
+  padding: 0.8rem 1rem;
+  border-radius: 5px;
+  background: #333;
+  font-size: 1.2rem;
+  color: aliceblue;
+}
+
+.hide {
+  display: none;
+}
