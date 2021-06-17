@@ -18,22 +18,21 @@ export default class PreloaderScene extends Phaser.Scene {
     this.playBtn = this.add.image(630, 460, 'play-button').setScale(0.3);
     this.playBtn.setInteractive({ useHandCursor: true });
     this.pointer = this.input.activePointer;
-    this.add.text(440, 25, 'JUNGLE', { fontFamily: '"Press Start 2P"', fontSize: 100, color: '#a99561' });
-    this.add.text(480, 95, 'GAME', { fontFamily: '"Press Start 2P"', fontSize: 100, color: '#a99561' });
+    this.add.text(430, 24, 'JUNGLE', { fontFamily: '"Monoton"', fontSize: 90, color: '#a99561' });
+    this.add.text(470, 105, 'GAME', { fontFamily: '"Monoton"', fontSize: 90, color: '#a99561' });
     this.playBtn.on('pointerdown', () => {
       const playerName = document.querySelector('#playerName').value.trim();
-      const validUsername = (username) => {
+      const validName = (username) => {
         if (username.length > 2) return true;
         return false;
       };
       
-      const validPlayerName = validUsername(playerName);
-      if (validPlayerName) {
+      const validUserName = validName(playerName);
+      if (validUserName) {
         this.scene.start('MainScene');
-        // myGame.score = 1;
         document.querySelector('#playerName').classList.add('hide');
       } else {
-        const notice = this.add.text(340, 420, 'Please enter your name', { fontFamily: '"Press Start 2P"', fontSize: 15, color: '#ffffff' });
+        const notice = this.add.text(564, 350, 'Please enter your name', { fontFamily: '"Press Start 2P"', fontSize: 15, color: '#ffffff' });
         setTimeout(() => { notice.destroy(); }, 3000);
       }
     }, this);

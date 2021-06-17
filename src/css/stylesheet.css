@@ -1,12 +1,12 @@
 .playername {
   position: absolute;
   bottom: 16rem;
-  left: 17rem;
+  left: 32rem;
   outline: none;
   border: none;
   padding: 0.8rem 1rem;
   border-radius: 5px;
-  background: #333;
+  background: rgb(54, 54, 54);
   font-size: 1.2rem;
   color: aliceblue;
 }
