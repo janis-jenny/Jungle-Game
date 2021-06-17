@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import bg from '../assets/boot-background.png';
-import play from '../assets/play-button.png'
- 
+import play from '../assets/play-button.png';
+import '../css/stylesheet.css';
+
 export default class PreloaderScene extends Phaser.Scene {
   constructor () {
     super('Preloader');
