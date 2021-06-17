@@ -43,7 +43,7 @@ export default class MainScene extends Phaser.Scene {
 
     gameState.active = true;
     this.add.image(630, 292, 'bg');
- 
+    
     const platforms = this.physics.add.staticGroup();
     gameState.platforms = this.physics.add.staticGroup();
 
@@ -79,29 +79,27 @@ export default class MainScene extends Phaser.Scene {
     
     this.createAnimations();
     this.levelSetup();
-
+    
     // set Cameras here
     this.cameras.main.setBounds(0, 0, gameState.width, gameState.height);
     this.physics.world.setBounds(0, 0, gameState.width, gameState.height);
     this.cameras.main.startFollow(gameState.player, true, 0.5, 0.5);
- 
-    gameState.player.setCollideWorldBounds(true);
     
     // Makes a collision between the character and the platforms
-    const platformsCollider = this.physics.add.collider(gameState.player, platforms);
+    this.physics.add.collider(gameState.player, platforms);
     this.physics.add.collider(gameState.player, gameState.platforms);
     this.physics.add.collider(gameState.enemy1, platforms);  
     this.physics.add.collider(gameState.enemy2, platforms);
     this.physics.add.collider(gameState.enemy3, platforms); 
     
     gameState.player.body.bounce.y = 0.2;
-
+    
     gameState.cursors = this.input.keyboard.createCursorKeys();
 
     const coins = this.physics.add.group({
       key: 'coin',
-      repeat: 36,
-      setXY: { x: 250, y: 0, stepX: 50 }
+      repeat: 40,
+      setXY: { x: 205, y: 0, stepX: 47 }
     });
 
     coins.children.iterate(function (child) {
@@ -124,7 +122,7 @@ export default class MainScene extends Phaser.Scene {
     
     // makes an overlap event for when the player gets an item
     this.physics.add.overlap(gameState.player, coins, this.collectCoin, null, this);
-    
+
     this.physics.add.overlap(gameState.player, gameState.exit, function() {
       // Add in the collider that will fade out to the next level here
       this.cameras.main.fade(800, 0, 0, 0, false, function(camera, progress) { 
@@ -156,12 +154,12 @@ export default class MainScene extends Phaser.Scene {
       this.add.text(1120, 100, 'Game Over', { fontSize: '24px', fill: '#000000' })
       this.cameras.main.fade(800, 0, 0, 0, false, function(camera, progress) { 
         if (progress > .9) {
-          
-          this.scene.restart(this.levelKey)
-        } else {
+          this.collectCoin.stop(); 
+          } else {
           gameState.player.body.setVelocityY(-200);
           gameState.player.setTint(0xff0000);
-          gameState.player.anims.play('idle');
+          gameState.player.anims.play('idle');   
+            
         }
       })
     }, null, this);
