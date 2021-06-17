@@ -138,7 +138,6 @@ export default class MainScene extends Phaser.Scene {
     // Sets the jumps to 0 for the double jump
     this.jumps = 0;
 
-    
     gameState.moveTween = this.tweens.add({
       targets: [gameState.enemy1, gameState.enemy2, gameState.enemy3],
       props: {
@@ -154,7 +153,7 @@ export default class MainScene extends Phaser.Scene {
       this.add.text(1120, 100, 'Game Over', { fontSize: '24px', fill: '#000000' })
       this.cameras.main.fade(800, 0, 0, 0, false, function(camera, progress) { 
         if (progress > .9) {
-          this.collectCoin.stop(); 
+          this.scene.restart(this.levelKey); 
           } else {
           gameState.player.body.setVelocityY(-200);
           gameState.player.setTint(0xff0000);
