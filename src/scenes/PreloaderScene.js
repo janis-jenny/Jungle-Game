@@ -4,11 +4,11 @@ import play from '../assets/play-button.png';
 import '../css/stylesheet.css';
 
 export default class PreloaderScene extends Phaser.Scene {
-  constructor () {
+  constructor() {
     super('Preloader');
   }
- 
-  preload () {
+
+  preload() {
     this.load.image('boot-background', bg);
     this.load.image('play-button', play);
   }
@@ -26,7 +26,7 @@ export default class PreloaderScene extends Phaser.Scene {
         if (username.length > 2) return true;
         return false;
       };
-      
+
       const validUserName = validName(playerName);
       if (validUserName) {
         this.scene.start('MainScene');
@@ -37,4 +37,4 @@ export default class PreloaderScene extends Phaser.Scene {
       }
     }, this);
   }
-};
+}
