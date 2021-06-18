@@ -13,6 +13,12 @@ import tresure from '../assets/chest.png';
 import orc1 from '../assets/orc.png';
 import orc2 from '../assets/orcHunter.png';
 import orc3 from '../assets/orcWarrior.png';
+import tree1 from '../assets/tree1.png';
+import tree2 from '../assets/tree2.png';
+import tree3 from '../assets/tree3.png';
+import tree4 from '../assets/tree4.png';
+import tree5 from '../assets/tree5.png';
+import tree6 from '../assets/tree6.png';
 
 const gameState = {
   score: 0,
@@ -40,6 +46,12 @@ export default class MainScene extends Phaser.Scene {
     this.load.spritesheet('orc1', orc1, { frameWidth: 48, frameHeight: 64 });
     this.load.spritesheet('orc2', orc2, { frameWidth: 48, frameHeight: 64 });
     this.load.spritesheet('orc3', orc3, { frameWidth: 48, frameHeight: 64 });
+    this.load.image('tree1', tree1);
+    this.load.image('tree2', tree2);
+    this.load.image('tree3', tree3);
+    this.load.image('tree4', tree4);
+    this.load.image('tree5', tree5);
+    this.load.image('tree6', tree6);
   }
 
   //
@@ -50,6 +62,16 @@ export default class MainScene extends Phaser.Scene {
     const platforms = this.physics.add.staticGroup();
     gameState.platforms = this.physics.add.staticGroup();
 
+    const trees = this.physics.add.staticGroup();
+    trees.create(450, 430, 'tree1').setScale(0.5).refreshBody();
+    trees.create(1100, 430, 'tree2').setScale(0.5).refreshBody();
+    trees.create(1690, 430, 'tree3').setScale(0.5).refreshBody();
+
+   /*  const trees1Positions = [
+      { x: 450, y: 430 }, { x: 580, y: 585 }, { x: 1010, y: 585 }, { x: 1250, y: 585 },
+      { x: 1660, y: 585 }, { x: 1900, y: 585 }, { x: 2200, y: 330 },
+    ];
+ */
     const plat1Positions = [
       { x: 340, y: 585 }, { x: 580, y: 585 }, { x: 1010, y: 585 }, { x: 1250, y: 585 },
       { x: 1660, y: 585 }, { x: 1900, y: 585 }, { x: 2200, y: 330 },
@@ -265,7 +287,7 @@ export default class MainScene extends Phaser.Scene {
     }
   }
 
-  static collectCoin(player, coin) {
+  collectCoin(player, coin) {
     coin.disableBody(true, true);
     player.refreshBody();
     gameState.score += 10;
