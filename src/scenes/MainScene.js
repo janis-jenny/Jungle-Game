@@ -2,6 +2,7 @@
 /* eslint-disable func-names */
 /* eslint-disable no-restricted-syntax */
 import Phaser from 'phaser';
+import ApiScore from './ApiScore';
 import sceneoptions from '../config/sceneoptions';
 import bg from '../assets/bg.png';
 import gamoraWalk from '../assets/gamora_walk.png';
@@ -20,7 +21,7 @@ import tree4 from '../assets/tree4.png';
 import tree5 from '../assets/tree5.png';
 import tree6 from '../assets/tree6.png';
 
-const gameState = {
+export const gameState = {
   score: 0,
   speed: 240,
   ups: 380,
@@ -54,7 +55,6 @@ export default class MainScene extends Phaser.Scene {
     this.load.image('tree6', tree6);
   }
 
-  //
   create() {
     gameState.active = true;
     this.add.image(630, 292, 'bg');
@@ -187,7 +187,8 @@ export default class MainScene extends Phaser.Scene {
         this.add.text(1120, 100, 'Game Over', { fontSize: '24px', fill: '#000000' });
         this.cameras.main.fade(800, 0, 0, 0, false, function (camera, progress) {
           if (progress > 0.9) {
-            this.scene.restart(this.levelKey);
+            // this.scene.restart(this.levelKey);
+            this.gameOver();
           } else {
             gameState.player.body.setVelocityY(-200);
             gameState.player.setTint(0xff0000);
@@ -290,7 +291,8 @@ export default class MainScene extends Phaser.Scene {
     if (gameState.player.y > gameState.height) {
       this.cameras.main.shake(240, 0.01, false, function (camera, progress) {
         if (progress > 0.9) {
-          this.scene.restart(this.levelKey);
+          // this.scene.restart(this.levelKey);
+          this.gameOver();
         }
       });
     }
@@ -308,5 +310,17 @@ export default class MainScene extends Phaser.Scene {
     player.refreshBody();
     gameState.score += 10;
     gameState.scoreText.setText(`Score: ${gameState.score}`);
+  }
+
+  gameOver() {
+    const username = document.querySelector('#playerName').value.trim();
+    const score = new ApiScore();
+    score.saveScore(username, gameState.score);
+    this.startGameOverScene(score);
+  }
+
+  async startGameOverScene(playerScore) {
+    const score = await playerScore;
+    if (score) this.scene.start('GameOver');
   }
 }
