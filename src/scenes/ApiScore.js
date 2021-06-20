@@ -1,7 +1,7 @@
 export default class ApiScore {
   constructor() {
     this.config = {
-      gameid: 'wC3oX09S6iX57HlVfeav',
+      gameid: '7tzLllmhFuY3r1zz0d8U',
       baseURL: 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/',
     };
   }
@@ -37,7 +37,7 @@ export default class ApiScore {
     };
 
     const data = await fetch(url, options);
-    const response = await data.json(); // converts the response into json
+    const response = await data.json();
 
     return response;
   }
