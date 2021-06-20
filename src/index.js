@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 // import BootScene from './scenes/BootScene';
 // import PreloaderScene from './scenes/PreloaderScene';
-import MainScene from './scenes/MainScene';
+// import MainScene from './scenes/MainScene';
 import GameOver from './scenes/GameOver';
 import './css/stylesheet.css';
 
@@ -16,7 +16,7 @@ const config = {
       enableBody: true,
     },
   },
-  scene: [MainScene, GameOver],
+  scene: [GameOver],
 };
 
 // eslint-disable-next-line no-unused-vars
