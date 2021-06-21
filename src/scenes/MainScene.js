@@ -186,9 +186,7 @@ export default class MainScene extends Phaser.Scene {
         this.add.text(1120, 100, 'Game Over', { fontSize: '24px', fill: '#000000' });
         this.cameras.main.fade(800, 0, 0, 0, false, function (camera, progress) {
           if (progress > 0.9) {
-            // this.scene.restart(this.levelKey);
             this.scene.start('GameOver');
-          // this.gameOver();
           } else {
             gameState.player.body.setVelocityY(-200);
             gameState.player.setTint(0xff0000);

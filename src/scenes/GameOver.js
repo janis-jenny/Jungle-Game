@@ -10,7 +10,7 @@ export default class GameOverScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('bg', bgOver);
+    this.load.image('boot-background', bgOver);
     this.load.spritesheet('dead_gamora', gamoraDead, { frameWidth: 40, frameHeight: 34 });
   }
 
@@ -19,7 +19,7 @@ export default class GameOverScene extends Phaser.Scene {
     const username = document.querySelector('#playerName').value.trim();
     api.saveScore(username, score);
     gameState.active = true;
-    this.add.image(630, 290, 'bg').setScale(2.5);
+    this.add.image(630, 290, 'boot-background').setScale(2.5);
     this.add.text(500, 23, 'GAME', { fontFamily: '"Monoton"', fontSize: 80, color: '#a99561' });
     this.add.text(504, 104, 'OVER', { fontFamily: '"Monoton"', fontSize: 80, color: '#a99561' });
 
