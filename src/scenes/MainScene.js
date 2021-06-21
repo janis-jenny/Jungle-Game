@@ -2,7 +2,6 @@
 /* eslint-disable func-names */
 /* eslint-disable no-restricted-syntax */
 import Phaser from 'phaser';
-// import ApiScore from './ApiScore';
 import sceneoptions from '../config/sceneoptions';
 import bg from '../assets/bg.png';
 import gamoraWalk from '../assets/gamora_walk.png';

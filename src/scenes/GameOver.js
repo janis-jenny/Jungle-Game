@@ -3,7 +3,6 @@ import Phaser from 'phaser';
 import { gameState } from './MainScene';
 import bgOver from '../assets/boot-background.png';
 import gamoraDead from '../assets/dead_gamora.png';
-import '../css/stylesheet.css';
 
 export default class GameOverScene extends Phaser.Scene {
   constructor() {
@@ -39,7 +38,7 @@ export default class GameOverScene extends Phaser.Scene {
       .setPadding(7)
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
-        this.scene.start('PreloaderScene');
+        this.scene.start('Preloader');
         const playerNameInput = document.querySelector('#playerName');
         playerNameInput.classList.remove('hide');
         playerNameInput.value = '';
