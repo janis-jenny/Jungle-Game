@@ -1,15 +1,15 @@
 import Phaser from 'phaser';
-import bg from '../assets/boot-background.png';
+import bgIntro from '../assets/boot-background.png';
 import play from '../assets/play-button.png';
 import '../css/stylesheet.css';
 
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {
-    super('Preloader');
+    super({ key: 'Preloader' });
   }
 
   preload() {
-    this.load.image('boot-background', bg);
+    this.load.image('boot-background', bgIntro);
     this.load.image('play-button', play);
   }
 

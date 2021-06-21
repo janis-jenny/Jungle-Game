@@ -1,27 +1,30 @@
 /* eslint-disable class-methods-use-this */
 import Phaser from 'phaser';
 import { gameState } from './MainScene';
-import ApiScore from './ApiScore';
-import bg from '../assets/boot-background.png';
+import bgOver from '../assets/boot-background.png';
 import gamoraDead from '../assets/dead_gamora.png';
+import '../css/stylesheet.css';
 
 export default class GameOverScene extends Phaser.Scene {
   constructor() {
-    super('GameOver');
+    super({ key: 'GameOver' });
   }
 
   preload() {
-    this.load.image('bg', bg);
+    this.load.image('bg', bgOver);
     this.load.spritesheet('dead_gamora', gamoraDead, { frameWidth: 40, frameHeight: 34 });
   }
 
   create() {
+    const { sys: { game: { globals: { api, score } } } } = this;
+    const username = document.querySelector('#playerName').value.trim();
+    api.saveScore(username, score);
     gameState.active = true;
     this.add.image(630, 290, 'bg').setScale(2.5);
-    this.add.text(528, 23, 'GAME', { fontFamily: '"Monoton"', fontSize: 80, color: '#a99561' });
-    this.add.text(531, 104, 'OVER', { fontFamily: '"Monoton"', fontSize: 80, color: '#a99561' });
+    this.add.text(500, 23, 'GAME', { fontFamily: '"Monoton"', fontSize: 80, color: '#a99561' });
+    this.add.text(504, 104, 'OVER', { fontFamily: '"Monoton"', fontSize: 80, color: '#a99561' });
 
-    gameState.player = this.physics.add.sprite(620, 240, 'dead_gamora').setScale(2);
+    gameState.player = this.physics.add.sprite(635, 240, 'dead_gamora').setScale(2);
     gameState.player.body.allowGravity = false;
     gameState.player.anims.play('dead');
     this.anims.create({
@@ -36,7 +39,7 @@ export default class GameOverScene extends Phaser.Scene {
       .setPadding(7)
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
-        this.scene.start('MainScene');
+        this.scene.start('PreloaderScene');
         const playerNameInput = document.querySelector('#playerName');
         playerNameInput.classList.remove('hide');
         playerNameInput.value = '';
@@ -54,28 +57,11 @@ export default class GameOverScene extends Phaser.Scene {
       .on('pointerover', () => this.scoreBoard.setStyle({ fill: '#a99561' }))
       .on('pointerout', () => this.scoreBoard.setStyle({ fill: '#f8e578' }));
 
-    this.gameOverScore = this.add.text(532, 270, '', {
+    this.gameOverScore = this.add.text(520, 290, '', {
       fontFamily: '"Train One"', fontSize: 30, color: '#a99561', fontStyle: 'bolder',
     });
 
-    this.gameOverScore.setText('Loading score ...');
-    const username = document.querySelector('#playerName').value.trim();
-    const score = new ApiScore();
-    const result = score.getScores(username, gameState.score);
-    this.setGameOverScoreText(result);
-  }
-
-  async setGameOverScoreText(res) {
-    const fontOptions = {
-      fontSize: '30px',
-      fontStyle: 'bolder',
-      fill: '#a99561',
-      align: 'center',
-      strokeThickness: 10,
-      stroke: '#a99561',
-    };
-    const result = await res;
-    if (result) this.gameOverScore.setText(`Your score is ${result}`, fontOptions);
+    this.gameOverScore.setText(`Your score is ${this.sys.game.globals.score}`);
   }
 
   update() {

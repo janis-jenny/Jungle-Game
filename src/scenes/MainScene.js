@@ -2,7 +2,7 @@
 /* eslint-disable func-names */
 /* eslint-disable no-restricted-syntax */
 import Phaser from 'phaser';
-import ApiScore from './ApiScore';
+// import ApiScore from './ApiScore';
 import sceneoptions from '../config/sceneoptions';
 import bg from '../assets/bg.png';
 import gamoraWalk from '../assets/gamora_walk.png';
@@ -188,7 +188,8 @@ export default class MainScene extends Phaser.Scene {
         this.cameras.main.fade(800, 0, 0, 0, false, function (camera, progress) {
           if (progress > 0.9) {
             // this.scene.restart(this.levelKey);
-            this.gameOver();
+            this.scene.start('GameOver');
+          // this.gameOver();
           } else {
             gameState.player.body.setVelocityY(-200);
             gameState.player.setTint(0xff0000);
@@ -291,8 +292,7 @@ export default class MainScene extends Phaser.Scene {
     if (gameState.player.y > gameState.height) {
       this.cameras.main.shake(240, 0.01, false, function (camera, progress) {
         if (progress > 0.9) {
-          // this.scene.restart(this.levelKey);
-          this.gameOver();
+          this.scene.start('GameOver');
         }
       });
     }
@@ -308,19 +308,7 @@ export default class MainScene extends Phaser.Scene {
   collectCoin(player, coin) {
     coin.disableBody(true, true);
     player.refreshBody();
-    gameState.score += 10;
-    gameState.scoreText.setText(`Score: ${gameState.score}`);
-  }
-
-  gameOver() {
-    const username = document.querySelector('#playerName').value.trim();
-    const score = new ApiScore();
-    score.saveScore(username, gameState.score);
-    this.startGameOverScene(score);
-  }
-
-  async startGameOverScene(playerScore) {
-    const score = await playerScore;
-    if (score) this.scene.start('GameOver');
+    this.sys.game.globals.score += 100;
+    gameState.scoreText.setText(`Score: ${this.sys.game.globals.score}`);
   }
 }
