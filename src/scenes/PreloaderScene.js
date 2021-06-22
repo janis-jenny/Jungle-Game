@@ -14,6 +14,7 @@ export default class PreloaderScene extends Phaser.Scene {
   }
 
   create() {
+    this.sys.game.globals.score = 0;
     this.add.image(630, 300, 'boot-background').setScale(2.5);
     this.playBtn = this.add.image(630, 460, 'play-button').setScale(0.3);
     this.playBtn.setInteractive({ useHandCursor: true });

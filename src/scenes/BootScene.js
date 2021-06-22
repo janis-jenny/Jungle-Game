@@ -13,7 +13,7 @@ export default class BootScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(0, 0, 'boot-background').setScale(3.5);
+    this.add.image(0, 0, 'boot-background').setScale(2.5);
     this.scene.start('MainScene');
   }
 }
