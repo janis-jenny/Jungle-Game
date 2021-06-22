@@ -41,20 +41,4 @@ export default class ApiScore {
 
     return response;
   }
-
-  /* async getTopScores(loadingText) {
-    const url = `${this.config.baseURL}${this.config.gameid}/scores/`;
-    const options = {
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      method: 'POST',
-      body: JSON.stringify(loadingText),
-    };
-    const data = await fetch(url, options);
-    const response = await data.json();
-    const topScores = response.result.sort(
-      (a, b) => ( b.score - a.score).slice(1, 6);
-    return topScores;
-  } */
 }

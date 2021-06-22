@@ -33,6 +33,7 @@ export default class ScoreBoard extends Phaser.Scene {
     this.loading.setText('Loading top scores ...');
 
     const top = await this.getTopScores();
+    this.destroyLoadingText(top)
 
     let gap = 0;
     top.forEach((item) => {
@@ -60,5 +61,10 @@ export default class ScoreBoard extends Phaser.Scene {
     const topScores = array.sort((a, b) => b.score - a.score).slice(1, 6);
 
     return topScores;
+  }
+
+  async destroyLoadingText(scores) {
+    const topScores = await scores;
+    if (topScores) { this.loading.destroy(); }
   }
 }
