@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-// import BootScene from './scenes/BootScene';
+import BootScene from './scenes/BootScene';
 import PreloaderScene from './scenes/PreloaderScene';
 import MainScene from './scenes/MainScene';
 import GameOver from './scenes/GameOver';
@@ -14,11 +14,11 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 200 },
+      gravity: { y: 0 },
       enableBody: true,
     },
   },
-  scene: [PreloaderScene, MainScene, GameOver, ScoreBoard],
+  scene: [BootScene, PreloaderScene, MainScene, GameOver, ScoreBoard],
 };
 
 // eslint-disable-next-line no-unused-vars
