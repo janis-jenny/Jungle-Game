@@ -14,7 +14,7 @@ export default class ScoreBoard extends Phaser.Scene {
     this.add.image(630, 290, 'boot-background').setScale(2.5);
     this.add.text(380, 30, 'LEADERBOARD', { fontFamily: '"Monoton"', fontSize: 60, color: '#a99561' });
 
-    this.playAgain = this.add.text(650, 400, 'Play again', { fontFamily: '"Train One"', fontSize: 30, color: '#a99561' })
+    this.playAgain = this.add.text(650, 460, 'Play again', { fontFamily: '"Train One"', fontSize: 30, color: '#a99561' })
       .setOrigin(0.5)
       .setPadding(7)
       .setInteractive({ useHandCursor: true })
@@ -33,15 +33,15 @@ export default class ScoreBoard extends Phaser.Scene {
     this.loading.setText('Loading top scores ...');
 
     const top = await this.getTopScores();
-    this.destroyLoadingText(top)
+    this.deleteLoadingText(top);
 
     let gap = 0;
     top.forEach((item) => {
-      this.add.text(630, 200 + gap, `${item.user} -------------  ${item.score}`, {
+      this.add.text(530, 170 + gap, `${item.user} -------------  ${item.score}`, {
         fontSize: '17px',
-        fill: '#55bfde',
+        fill: '#f8e578',
         width: 400,
-        fontFamily: 'sans-serif',
+        fontFamily: '"Train One"',
         padding: {
           left: 10,
           right: 10,
@@ -63,7 +63,7 @@ export default class ScoreBoard extends Phaser.Scene {
     return topScores;
   }
 
-  async destroyLoadingText(scores) {
+  async deleteLoadingText(scores) {
     const topScores = await scores;
     if (topScores) { this.loading.destroy(); }
   }
