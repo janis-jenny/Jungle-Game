@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import PreloaderScene from './scenes/PreloaderScene';
 import MainScene from './scenes/MainScene';
 import GameOver from './scenes/GameOver';
+import ScoreBoard from './scenes/ScoreBoard';
 import './css/stylesheet.css';
 import ApiScore from './scenes/ApiScore';
 
@@ -17,7 +18,7 @@ const config = {
       enableBody: true,
     },
   },
-  scene: [PreloaderScene, MainScene, GameOver],
+  scene: [PreloaderScene, MainScene, GameOver, ScoreBoard],
 };
 
 // eslint-disable-next-line no-unused-vars

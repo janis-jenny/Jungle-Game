@@ -11,7 +11,7 @@ export default class ApiScore {
 
     const options = {
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
       },
       method: 'GET',
     };
@@ -30,7 +30,7 @@ export default class ApiScore {
     };
     const options = {
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
       },
       method: 'POST',
       body: JSON.stringify(scoreData),
@@ -42,19 +42,19 @@ export default class ApiScore {
     return response;
   }
 
-  async getTopScores() {
+  /* async getTopScores(loadingText) {
     const url = `${this.config.baseURL}${this.config.gameid}/scores/`;
     const options = {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       method: 'POST',
+      body: JSON.stringify(loadingText),
     };
     const data = await fetch(url, options);
     const response = await data.json();
     const topScores = response.result.sort(
-      (a, b) => ((a.score) > (b.score) ? -1 : 1),
-    ).slice(0, 5);
+      (a, b) => ( b.score - a.score).slice(1, 6);
     return topScores;
-  }
+  } */
 }
