@@ -103,6 +103,7 @@ export default class MainScene extends Phaser.Scene {
     });
 
     gameState.player = this.physics.add.sprite(90, 420, 'gamora_walk').setScale(1.5);
+    gameState.player.body.debug = true;
 
     gameState.exit = this.physics.add.sprite(2250, 200, 'chest').setScale(1.5);
 
@@ -114,9 +115,10 @@ export default class MainScene extends Phaser.Scene {
     this.levelSetup();
 
     // set Cameras here
-    this.cameras.main.setBounds(0, 0, gameState.width, gameState.height);
-    this.physics.world.setBounds(0, 0, gameState.width, gameState.height);
+    this.cameras.main.setBounds(0, 0, gameState.width, gameState.height, true, true, true, false);
+    this.physics.world.setBounds(0, 0, gameState.width, gameState.height, true, true, true, false);
     this.cameras.main.startFollow(gameState.player, true, 0.5, 0.5);
+    gameState.player.setCollideWorldBounds(true, true, true, false);
 
     // Makes a collision between the character and the platforms
     this.physics.add.collider(gameState.player, platforms);
