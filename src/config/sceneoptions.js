@@ -1,7 +1,5 @@
 export default {
-  platformStartSpeed: 200,
-  playerGravity: 900,
-  jumpForce: 280,
-
+  playerGravity: 500,
+  jumpForce: 560,
   jumps: 2,
 };

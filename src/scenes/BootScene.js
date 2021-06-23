@@ -1,12 +1,19 @@
 import Phaser from 'phaser';
-// import sceneoptions from '../config/sceneoptions';
 import bg from '../assets/boot-background.png';
 import { gameState } from './MainScene';
 import gamoraBoot from '../assets/boot_gamora.png';
 
 export default class BootScene extends Phaser.Scene {
   constructor() {
-    super({ key: 'Boot' });
+    super({
+      key: 'Boot',
+      physics: {
+        default: 'arcade',
+        arcade: {
+          gravity: { y: 0 },
+        },
+      },
+    });
   }
 
   preload() {
@@ -19,6 +26,8 @@ export default class BootScene extends Phaser.Scene {
     const playerNameInput = document.querySelector('#playerName');
     playerNameInput.classList.add('hide');
     gameState.player = this.physics.add.sprite(320, 450, 'boot_gamora').setScale(2.8);
+    gameState.player.setVelocityY(0);
+
     this.anims.create({
       key: 'walk',
       frames: this.anims.generateFrameNumbers('boot_gamora', { start: 0, end: 11 }),
