@@ -24,7 +24,7 @@ import bush2 from '../assets/bush2.png';
 import bush3 from '../assets/bush3.png';
 import flower from '../assets/flower.png';
 import sign from '../assets/sign.png';
-import stone from '../assets/sign.png';
+import stone from '../assets/stone1.png';
 
 export const gameState = {
   score: 0,
@@ -61,12 +61,14 @@ export default class MainScene extends Phaser.Scene {
     this.load.image('bush1', bush1);
     this.load.image('bush2', bush2);
     this.load.image('bush3', bush3);
+    this.load.image('sign', sign);
+    this.load.image('stone', stone);
   }
 
   create() {
     gameState.active = true;
     this.add.image(630, 292, 'bg');
-
+    this.add.image(53, 415, 'sign').setScale(0.3);
     const platforms = this.physics.add.staticGroup();
     gameState.platforms = this.physics.add.staticGroup();
 
@@ -76,6 +78,7 @@ export default class MainScene extends Phaser.Scene {
     trees.create(1690, 430, 'tree3').setScale(0.5).refreshBody();
 
     const bush = this.physics.add.staticGroup();
+    const stone = this.physics.add.staticGroup();
 
     const trees1Positions = [
       { x: 1190, y: 470 }, { x: 1620, y: 480 }, { x: 1760, y: 470 },
@@ -124,7 +127,7 @@ export default class MainScene extends Phaser.Scene {
     });
 
     const bush1Positions = [
-      { x: 76, y: 438 }, { x: 960, y: 490 }, { x: 1100, y: 180 },
+      { x: 76, y: 440 }, { x: 960, y: 490 }, { x: 1100, y: 180 },
     ];
     bush1Positions.forEach(plat => {
       bush.create(plat.x, plat.y, 'bush1').setScale(0.4).refreshBody();
@@ -144,6 +147,13 @@ export default class MainScene extends Phaser.Scene {
       bush.create(plat.x, plat.y, 'bush3').setScale(0.4).refreshBody();
     });
 
+    const stonesPositions = [
+      {x: 710, y: 395 }, { x: 1320, y: 325 }, { x: 1840, y: 500 },
+    ];
+    stonesPositions.forEach(plat => {
+      stone.create(plat.x, plat.y, 'stone').setScale(0.3).refreshBody();
+    });
+
     const plat1Positions = [
       { x: 340, y: 585 }, { x: 580, y: 585 }, { x: 1010, y: 585 }, { x: 1250, y: 585 },
       { x: 1660, y: 585 }, { x: 1900, y: 585 }, { x: 2200, y: 330 },
@@ -160,6 +170,7 @@ export default class MainScene extends Phaser.Scene {
     });
 
     gameState.player = this.physics.add.sprite(90, 420, 'gamora_walk').setScale(1.5);
+
     gameState.player.body.debug = true;
 
     gameState.exit = this.physics.add.sprite(2250, 200, 'chest').setScale(1.5);
@@ -191,7 +202,7 @@ export default class MainScene extends Phaser.Scene {
     const coins = this.physics.add.group({
       key: 'coin',
       repeat: 48,
-      setXY: { x: 200, y: 0, stepX: 39 },
+      setXY: { x: 200, y: 0, stepX: 41 },
     });
 
     coins.children.iterate((child) => {
