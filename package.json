@@ -32,6 +32,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
     "jest": "^27.0.5",
+    "jest-canvas-mock": "^2.3.1",
     "raw-loader": "^4.0.2",
     "style-loader": "^2.0.0",
     "webpack": "^5.38.1",
@@ -40,7 +41,24 @@
   },
   "dependencies": {
     "core-js": "^3.14.0",
+    "identity-obj-proxy": "^3.0.0",
     "lodash": "^4.17.21",
     "phaser": "^3.55.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "setupFiles": [
+      "jest-canvas-mock"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleNameMapper": {
+      ".+\\.(css|less|sass|scss)$": "identity-obj-proxy",
+      ".+\\.(gif|ttf|eot|svg|png)$": "identity-obj-proxy"
+    }
   }
 }
