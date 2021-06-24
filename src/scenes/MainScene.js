@@ -19,6 +19,12 @@ import tree3 from '../assets/tree3.png';
 import tree4 from '../assets/tree4.png';
 import tree5 from '../assets/tree5.png';
 import tree6 from '../assets/tree6.png';
+import bush1 from '../assets/bush1.png';
+import bush2 from '../assets/bush2.png';
+import bush3 from '../assets/bush3.png';
+import flower from '../assets/flower.png';
+import sign from '../assets/sign.png';
+import stone from '../assets/sign.png';
 
 export const gameState = {
   score: 0,
@@ -52,6 +58,9 @@ export default class MainScene extends Phaser.Scene {
     this.load.image('tree4', tree4);
     this.load.image('tree5', tree5);
     this.load.image('tree6', tree6);
+    this.load.image('bush1', bush1);
+    this.load.image('bush2', bush2);
+    this.load.image('bush3', bush3);
   }
 
   create() {
@@ -65,6 +74,8 @@ export default class MainScene extends Phaser.Scene {
     trees.create(450, 430, 'tree1').setScale(0.5).refreshBody();
     trees.create(1100, 430, 'tree2').setScale(0.5).refreshBody();
     trees.create(1690, 430, 'tree3').setScale(0.5).refreshBody();
+
+    const bush = this.physics.add.staticGroup();
 
     const trees1Positions = [
       { x: 1190, y: 470 }, { x: 1620, y: 480 }, { x: 1760, y: 470 },
@@ -105,11 +116,32 @@ export default class MainScene extends Phaser.Scene {
     });
 
     const trees6Positions = [
-      { x: 735, y: 367 }, { x: 950, y: 228 }, { x: 1150, y: 160 }, { x: 1280, y: 295 },
-      { x: 1560, y: 80 },
+      { x: 497, y: 87 }, { x: 735, y: 367 }, { x: 950, y: 228 }, { x: 1150, y: 160 },
+      { x: 1280, y: 295 }, { x: 1560, y: 80 },
     ];
     trees6Positions.forEach(plat => {
       trees.create(plat.x, plat.y, 'tree6').setScale(0.3).refreshBody();
+    });
+
+    const bush1Positions = [
+      { x: 76, y: 438 }, { x: 960, y: 490 }, { x: 1100, y: 180 },
+    ];
+    bush1Positions.forEach(plat => {
+      bush.create(plat.x, plat.y, 'bush1').setScale(0.4).refreshBody();
+    });
+
+    const bush2Positions = [
+      { x: 296, y: 490 }, { x: 2150, y: 245 },
+    ];
+    bush2Positions.forEach(plat => {
+      bush.create(plat.x, plat.y, 'bush2').setScale(0.4).refreshBody();
+    });
+
+    const bush3Positions = [
+      { x: 576, y: 495 }, { x: 1260, y: 490 }, { x: 1950, y: 490 },
+    ];
+    bush3Positions.forEach(plat => {
+      bush.create(plat.x, plat.y, 'bush3').setScale(0.4).refreshBody();
     });
 
     const plat1Positions = [
