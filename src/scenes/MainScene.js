@@ -87,6 +87,31 @@ export default class MainScene extends Phaser.Scene {
       trees.create(plat.x, plat.y, 'tree6').setScale(0.3).refreshBody();
     });
 
+    const trees4Positions = [
+      { x: 230, y: 290 }, { x: 340, y: 290 }, { x: 440, y: 75 }, { x: 630, y: 375 },
+      { x: 870, y: 220 }, { x: 1060, y: 160 }, { x: 1240, y: 290 }, { x: 1450, y: 75 },
+      { x: 1870, y: 375 },
+    ];
+    trees4Positions.forEach(plat => {
+      trees.create(plat.x, plat.y, 'tree5').setScale(0.3).refreshBody();
+    });
+
+    const trees5Positions = [
+      { x: 250, y: 296 }, { x: 530, y: 75 }, { x: 660, y: 367 }, { x: 840, y: 228 },
+      { x: 1350, y: 289 }, { x: 1972, y: 370 }, { x: 1526, y: 89 },
+    ];
+    trees5Positions.forEach(plat => {
+      trees.create(plat.x, plat.y, 'tree4').setScale(0.3).refreshBody();
+    });
+
+    const trees6Positions = [
+      { x: 735, y: 367 }, { x: 950, y: 228 }, { x: 1150, y: 160 }, { x: 1280, y: 295 },
+      { x: 1560, y: 80 },
+    ];
+    trees6Positions.forEach(plat => {
+      trees.create(plat.x, plat.y, 'tree6').setScale(0.3).refreshBody();
+    });
+
     const plat1Positions = [
       { x: 340, y: 585 }, { x: 580, y: 585 }, { x: 1010, y: 585 }, { x: 1250, y: 585 },
       { x: 1660, y: 585 }, { x: 1900, y: 585 }, { x: 2200, y: 330 },
