@@ -216,8 +216,8 @@ export default class MainScene extends Phaser.Scene {
 
     const coins = this.physics.add.group({
       key: 'coin',
-      repeat: 48,
-      setXY: { x: 200, y: 0, stepX: 41 },
+      repeat: 52,
+      setXY: { x: 200, y: 0, stepX: 38 },
     });
 
     coins.children.iterate((child) => {
