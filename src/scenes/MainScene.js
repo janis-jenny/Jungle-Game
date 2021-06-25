@@ -63,12 +63,14 @@ export default class MainScene extends Phaser.Scene {
     this.load.image('bush3', bush3);
     this.load.image('sign', sign);
     this.load.image('stone', stone);
+    this.load.image('flower', flower);
   }
 
   create() {
     gameState.active = true;
     this.add.image(630, 292, 'bg');
     this.add.image(53, 415, 'sign').setScale(0.3);
+
     const platforms = this.physics.add.staticGroup();
     gameState.platforms = this.physics.add.staticGroup();
 
@@ -79,6 +81,7 @@ export default class MainScene extends Phaser.Scene {
 
     const bush = this.physics.add.staticGroup();
     const stone = this.physics.add.staticGroup();
+    const flower = this.physics.add.staticGroup();
 
     const trees1Positions = [
       { x: 1190, y: 470 }, { x: 1620, y: 480 }, { x: 1760, y: 470 },
@@ -148,10 +151,22 @@ export default class MainScene extends Phaser.Scene {
     });
 
     const stonesPositions = [
-      {x: 710, y: 395 }, { x: 1320, y: 325 }, { x: 1840, y: 500 },
+      { x: 710, y: 395 }, { x: 1320, y: 325 }, { x: 1840, y: 500 },
     ];
     stonesPositions.forEach(plat => {
       stone.create(plat.x, plat.y, 'stone').setScale(0.3).refreshBody();
+    });
+
+    const flowersPositions = [
+      { x: 364, y: 491 }, { x: 300, y: 317 }, { x: 282, y: 319 }, { x: 470, y: 103 },
+      { x: 321, y: 319 }, { x: 510, y: 494 }, { x: 635, y: 492 }, { x: 900, y: 248 },
+      { x: 920, y: 244 }, { x: 1110, y: 180 }, { x: 1084, y: 493 }, { x: 1329, y: 493 },
+      { x: 1342, y: 491 }, { x: 1260, y: 321 }, { x: 1500, y: 110 }, { x: 1474, y: 104 },
+      { x: 1578, y: 494 }, { x: 1589, y: 491 }, { x: 1650, y: 493 }, { x: 1732, y: 494 },
+      { x: 1782, y: 493 }, { x: 1890, y: 491 }, { x: 1910, y: 387 }, { x: 1930, y: 384 },
+    ];
+    flowersPositions.forEach(plat => {
+      flower.create(plat.x, plat.y, 'flower').setScale(0.3).refreshBody();
     });
 
     const plat1Positions = [
