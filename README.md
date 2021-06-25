@@ -60,7 +60,7 @@ The game design document can be found [here](./GameDesignDocument.md)
 
 To get a local copy up and running follow these simple steps:
 
-1. Go to the [repository page](https://github.com/janis-jenny/Weather-App).
+1. Go to the [repository page](https://github.com/janis-jenny/Jungle-Game).
 2. Press the "Code" button and copy the link.
 3. Clone it using git command `git clone <you_repository_link>`.
 4. Move to the local project: cd `<Your_repository_name>`.
@@ -109,7 +109,7 @@ To play the game, the arrow keys highlighted below will be very crucial.
 
 Contributions, issues, and feature requests are welcome!
 
-Feel free to check the [issues page](https://github.com/janis-jenny/Weather-App/issues).
+Feel free to check the [issues page](https://github.com/janis-jenny/Jungle-Game/issues).
 
 
 
