@@ -12,7 +12,7 @@ export default class ScoreBoard extends Phaser.Scene {
 
   async create() {
     this.add.image(630, 290, 'boot-background').setScale(2.5);
-    this.add.text(380, 30, 'LEADERBOARD', { fontFamily: '"Monoton"', fontSize: 60, color: '#a99561' });
+    this.add.text(380, 30, 'LEADER BOARD', { fontFamily: '"Monoton"', fontSize: 65, color: '#a99561' });
 
     this.playAgain = this.add.text(650, 460, 'Play again', { fontFamily: '"Train One"', fontSize: 30, color: '#a99561' })
       .setOrigin(0.5)
