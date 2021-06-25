@@ -38,7 +38,9 @@ Gamor go to an adventure in the jungle to find a treasure chest. In the uphill j
 
 
 ## Scenes
+
 - **Boot scene** It displays Gamora walking and shooting in the background jungle. background.
+
 ![Boot Screenshot](./src/assets/boot-scene.jpg)
 
 
