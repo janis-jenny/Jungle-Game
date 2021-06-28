@@ -14,19 +14,6 @@ export default class ScoreBoard extends Phaser.Scene {
     this.add.image(630, 290, 'boot-background').setScale(2.5);
     this.add.text(380, 30, 'LEADER BOARD', { fontFamily: '"Monoton"', fontSize: 65, color: '#a99561' });
 
-    this.playAgain = this.add.text(650, 460, 'Play again', { fontFamily: '"Train One"', fontSize: 30, color: '#a99561' })
-      .setOrigin(0.5)
-      .setPadding(7)
-      .setInteractive({ useHandCursor: true })
-      .on('pointerdown', () => {
-        this.scene.start('Preloader');
-        const playerNameInput = document.querySelector('#playerName');
-        playerNameInput.classList.remove('hide');
-        playerNameInput.value = '';
-      })
-      .on('pointerover', () => this.playAgain.setStyle({ fill: '#a99561' }))
-      .on('pointerout', () => this.playAgain.setStyle({ fill: '#f8e578' }));
-
     this.loading = this.add.text(500, 290, '', {
       fontFamily: '"Train One"', fontSize: 30, color: '#a99561', fontStyle: 'bolder',
     });
@@ -51,6 +38,19 @@ export default class ScoreBoard extends Phaser.Scene {
       });
       gap += 50;
     });
+
+    this.playAgain = this.add.text(650, 460, 'Play again', { fontFamily: '"Train One"', fontSize: 30, color: '#a99561' })
+      .setOrigin(0.5)
+      .setPadding(7)
+      .setInteractive({ useHandCursor: true })
+      .on('pointerdown', () => {
+        this.scene.start('Preloader');
+        const playerNameInput = document.querySelector('#playerName');
+        playerNameInput.classList.remove('hide');
+        playerNameInput.value = '';
+      })
+      .on('pointerover', () => this.playAgain.setStyle({ fill: '#a99561' }))
+      .on('pointerout', () => this.playAgain.setStyle({ fill: '#f8e578' }));
   }
 
   async getTopScores() {
@@ -58,7 +58,9 @@ export default class ScoreBoard extends Phaser.Scene {
     const scores = await apiScore.getScores();
     const array = [];
     scores.forEach((item) => array.push({ user: item.user, score: item.score }));
-    const topScores = array.sort((a, b) => b.score - a.score).slice(1, 6);
+    const topScores = array.sort(
+      (a, b) => ((a.score) > (b.score) ? -1 : 1),
+    ).slice(0, 5);
 
     return topScores;
   }

@@ -1,7 +1,7 @@
 export default class ApiScore {
   constructor() {
     this.config = {
-      gameid: '7tzLllmhFuY3r1zz0d8U',
+      gameid: 'Poioe0Au7nuK6g0xGfl3',
       baseURL: 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/',
     };
   }
