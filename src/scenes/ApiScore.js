@@ -15,11 +15,14 @@ export default class ApiScore {
       },
       method: 'GET',
     };
+    try {
+      const data = await fetch(url, options);
+      const { result: scores } = await data.json();
 
-    const data = await fetch(url, options);
-    const { result: scores } = await data.json();
-
-    return scores;
+      return scores;
+    } catch (e) {
+      return e;
+    }
   }
 
   async saveScore(username, score) {
@@ -35,10 +38,13 @@ export default class ApiScore {
       method: 'POST',
       body: JSON.stringify(scoreData),
     };
+    try {
+      const data = await fetch(url, options);
+      const response = await data.json();
 
-    const data = await fetch(url, options);
-    const response = await data.json();
-
-    return response;
+      return response;
+    } catch (e) {
+      return e;
+    }
   }
 }
