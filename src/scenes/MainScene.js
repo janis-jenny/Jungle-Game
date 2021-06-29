@@ -195,8 +195,7 @@ export default class MainScene extends Phaser.Scene {
     gameState.enemy1 = this.physics.add.sprite(320, 400, 'orc1');
     gameState.enemy2 = this.physics.add.sprite(990, 400, 'orc2');
     gameState.enemy3 = this.physics.add.sprite(1640, 400, 'orc3');
-    gameState.movil = this.physics.add.sprite(1700, 265, 'block');
-    gameState.movil.setFriction(1, 0, Infinity);
+    gameState.movil = this.physics.add.sprite(1700, 265, 'block').setImmovable(true);
 
     this.createAnimations();
     this.levelSetup();
@@ -212,16 +211,25 @@ export default class MainScene extends Phaser.Scene {
       duration: 1500,
       yoyo: true,
       repeat: -1,
+      onUpdate: () => {
+        gameState.movil.vx = 300;
+      },
     });
 
     timeline.play();
+
+    const collisionMovingPlatform = (sprite, platform) => {
+      if (platform.body.touching.up && sprite.body.touching.down) {
+        sprite.isOnPlatform = true;
+        sprite.currentPlatform = platform;
+      }
+    };
 
     // set Cameras here
     this.cameras.main.setBounds(0, 0, gameState.width, gameState.height, true, true, true, false);
     this.physics.world.setBounds(0, 0, gameState.width, gameState.height, true, true, true, false);
     this.cameras.main.startFollow(gameState.player, true, 0.5, 0.5);
     gameState.player.setCollideWorldBounds(true, true, true, false);
-    // gameState.movil.setCollideWorldBounds(true);
 
     // Makes a collision between the character and the platforms
     this.physics.add.collider(gameState.player, platforms);
@@ -229,6 +237,7 @@ export default class MainScene extends Phaser.Scene {
     this.physics.add.collider(gameState.enemy1, platforms);
     this.physics.add.collider(gameState.enemy2, platforms);
     this.physics.add.collider(gameState.enemy3, platforms);
+    this.physics.add.collider(gameState.player, gameState.movil, collisionMovingPlatform);
 
     gameState.player.body.bounce.y = 0.2;
 
