@@ -10,7 +10,7 @@
 <p align="center">
   <strong>Made by Jenny Cárdenas</strong>
   <br>
-   This is a platform game developed using phaser. The player play the role of Gamora, she collect coins, avoid orcs and find a tresure chest to win. The game is developed specifically for the web.
+  This is a platform game developed using phaser. The player plays the role of Gamora, she collects coins, avoids orcs, and finds a treasure chest to win. The game is developed specifically for the web.
 </p>
 
 <p align="center">
@@ -64,7 +64,7 @@ To get a local copy up and running follow these simple steps:
 2. Press the "Code" button and copy the link.
 3. Clone it using git command `git clone <you_repository_link>`.
 4. Move to the local project: cd `<Your_repository_name>`.
-5. Install webpack locally, go to the repo's root an run `npm install --save-dev webpack`
+5. Install webpack locally, go to the repo's root and run `npm install --save-dev webpack`
 6. Run `npm install` to get all the dependencies.
 7. Run `npm start` to build the project and start the server
 8. To run tests, run `npm run test`

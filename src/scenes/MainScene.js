@@ -25,6 +25,7 @@ import bush3 from '../assets/bush3.png';
 import flower from '../assets/flower.png';
 import sign from '../assets/sign.png';
 import stone from '../assets/stone1.png';
+import block from '../assets/block.png';
 
 export const gameState = {
   score: 0,
@@ -52,6 +53,7 @@ export default class MainScene extends Phaser.Scene {
     this.load.spritesheet('orc1', orc1, { frameWidth: 48, frameHeight: 64 });
     this.load.spritesheet('orc2', orc2, { frameWidth: 48, frameHeight: 64 });
     this.load.spritesheet('orc3', orc3, { frameWidth: 48, frameHeight: 64 });
+    this.load.spritesheet('block', block, { frameWidth: 95, frameHeight: 42 });
     this.load.image('tree1', tree1);
     this.load.image('tree2', tree2);
     this.load.image('tree3', tree3);
@@ -193,15 +195,33 @@ export default class MainScene extends Phaser.Scene {
     gameState.enemy1 = this.physics.add.sprite(320, 400, 'orc1');
     gameState.enemy2 = this.physics.add.sprite(990, 400, 'orc2');
     gameState.enemy3 = this.physics.add.sprite(1640, 400, 'orc3');
+    gameState.movil = this.physics.add.sprite(1700, 265, 'block');
+    gameState.movil.setFriction(1, 0, Infinity);
 
     this.createAnimations();
     this.levelSetup();
+
+    gameState.movil.body.allowGravity = false;
+
+    const timeline = this.tweens.createTimeline();
+
+    timeline.add({
+      targets: gameState.movil,
+      x: 2000,
+      ease: Phaser.Math.Easing.Sine.InOut,
+      duration: 1500,
+      yoyo: true,
+      repeat: -1,
+    });
+
+    timeline.play();
 
     // set Cameras here
     this.cameras.main.setBounds(0, 0, gameState.width, gameState.height, true, true, true, false);
     this.physics.world.setBounds(0, 0, gameState.width, gameState.height, true, true, true, false);
     this.cameras.main.startFollow(gameState.player, true, 0.5, 0.5);
     gameState.player.setCollideWorldBounds(true, true, true, false);
+    // gameState.movil.setCollideWorldBounds(true);
 
     // Makes a collision between the character and the platforms
     this.physics.add.collider(gameState.player, platforms);
