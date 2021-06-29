@@ -207,19 +207,16 @@ export default class MainScene extends Phaser.Scene {
     timeline.add({
       targets: gameState.movil,
       x: 2000,
-      ease: Phaser.Math.Easing.Sine.InOut,
+      ease: 'Power 2',
       duration: 1500,
       yoyo: true,
       repeat: -1,
-      onUpdate: () => {
-        gameState.movil.vx = 300;
-      },
     });
 
     timeline.play();
 
     const collisionMovingPlatform = (sprite, platform) => {
-      if (platform.body.touching.up && sprite.body.touching.down) {
+      if (platform.body.moves && platform.body.touching.up && sprite.body.touching.down) {
         sprite.isOnPlatform = true;
         sprite.currentPlatform = platform;
       }
@@ -237,7 +234,8 @@ export default class MainScene extends Phaser.Scene {
     this.physics.add.collider(gameState.enemy1, platforms);
     this.physics.add.collider(gameState.enemy2, platforms);
     this.physics.add.collider(gameState.enemy3, platforms);
-    this.physics.add.collider(gameState.player, gameState.movil, collisionMovingPlatform);
+    this.physics.add.collider(gameState.player, gameState.movil,
+      collisionMovingPlatform, null, this);
 
     gameState.player.body.bounce.y = 0.2;
 
