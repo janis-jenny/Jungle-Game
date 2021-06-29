@@ -211,9 +211,6 @@ export default class MainScene extends Phaser.Scene {
       duration: 1500,
       yoyo: true,
       repeat: -1,
-      onUpdate: () => {
-        gameState.movil.vx = 300;
-      },
     });
 
     timeline.play();
