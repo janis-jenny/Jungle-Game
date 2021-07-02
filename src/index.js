@@ -22,7 +22,6 @@ const config = {
 };
 
 // eslint-disable-next-line no-unused-vars
-// PreloaderScene, MainScene,
 
 const api = new ApiScore();
 
